@@ -24,7 +24,7 @@ h1{
 }
 
 input{
-    width:320px;
+    width:360px;
     padding:14px;
     margin:10px 0;
     border:none;
@@ -42,7 +42,7 @@ input:focus{
 }
 
 button{
-    width:320px;
+    width:360px;
     padding:14px;
     margin-top:15px;
     border:none;
