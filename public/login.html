@@ -2,9 +2,11 @@
 <html>
 <head>
     <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="secion.css">
     <title>Login</title>
 </head>
 <body>
+<section class="secion"> 
     <h1>Iniciar sesión</h1>
 
     <input type="text" id="user" placeholder="Usuario">
@@ -13,7 +15,7 @@
     <button onclick="login()">Entrar</button>
 
     <p>¿No tienes cuenta? <a href="register.html">Regístrate</a></p>
-
+</section>
      <script src="auth.js"></script> 
     <script>
         fetch("https://TU-BACKEND.onrender.com/register", {
