@@ -1,0 +1,113 @@
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      padding: 0px;
+      margin: 0px;
+
+    }
+
+    .navega {
+      background-color: #061125;
+      overflow: hidden;
+      margin-bottom: 60px;
+    }
+
+    .navega #navega {
+      margin-left: 16px;
+    }
+
+    .container {
+
+      max-width: 800px;
+      margin: 24px auto;
+      background: #fff;
+      padding:30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .container #anota{
+    color: #061125;
+    }
+
+    #taskInput {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px;
+      margin-top: 5px;
+      width: 100%;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+
+    }
+
+    button:hover {
+      background: #218838;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #f8f9fa;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    li.completed span {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    .actions button {
+      margin-left: 5px;
+      padding: 5px 8px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .delete-btn {
+      background: #dc3545;
+      color: white;
+    }
+
+    .edit-btn {
+      background: #ffc107;
+      color: black;
+    }
+
+    .save-btn {
+      background: #007bff;
+      color: white;
+    }
+
+
+    @media (min-width: 200px) and (max-width: 768px) {
+      body {
+        background-color: rgb(103, 182, 235);
+        font-size: 18px;
+      }
+
+      h2,
+      h1 {
+        font-size: 18px;
+      }
+    }

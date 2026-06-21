@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="login.css">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Iniciar sesión</h1>
+
+    <input type="text" id="user" placeholder="Usuario">
+    <input type="password" id="pass" placeholder="Contraseña">
+
+    <button onclick="login()">Entrar</button>
+
+    <p>¿No tienes cuenta? <a href="register.html">Regístrate</a></p>
+
+     <script src="auth.js"></script> 
+    <script>
+        fetch("https://TU-BACKEND.onrender.com/register", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    username: "miguel",
+    password: "1234"
+  })
+})
+.then(res => res.json())
+.then(data => console.log(data));
+    </script>
+</body>
+</html>
