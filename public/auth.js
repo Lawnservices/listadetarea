@@ -15,7 +15,7 @@ async function register() {
   const data = await res.json();
   alert(data.ok ? "Registrado" : data.error);
 
-  if (data.ok) window.location.href = "login";
+  if (data.ok) window.location.href = "login.html";
 }
 
 // LOGIN
