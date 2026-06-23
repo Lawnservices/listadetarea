@@ -42,7 +42,7 @@ async function login() {
   }
 
   localStorage.setItem("token", data.token);
-  window.location.href = "tareas";
+  window.location.href = "tareas.html";
 }
 
 // LOGOUT (solo borra token)
