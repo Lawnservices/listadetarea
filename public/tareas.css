@@ -79,7 +79,7 @@ button[onclick="addTask()"]:hover{
 }
 
 /* Botón Logout */
-button[onclick="logout()"]{
+#salir{
     background:#ef4444;
     color:white;
     position:absolute;
@@ -87,7 +87,7 @@ button[onclick="logout()"]{
     right:20px;
 }
 
-button[onclick="logout()"]:hover{
+#salir:hover{
     background:#dc2626;
 }
 
