@@ -6,9 +6,9 @@ async function register() {
   const username = document.getElementById("user").value.trim();
   const password = document.getElementById("pass").value.trim();
 
-  const res = await fetch('/register', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const res = await fetch("https://mlaguna.pythonanywhere.com/api/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password })
   });
 
@@ -23,9 +23,9 @@ async function login() {
   const username = document.getElementById("user").value.trim();
   const password = document.getElementById("pass").value.trim();
 
-  const res = await fetch('/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const res = await fetch("https://mlaguna.pythonanywhere.com/api/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password })
   });
 
@@ -44,9 +44,9 @@ async function login() {
 async function logout() {
   const token = localStorage.getItem("token");
 
-  await fetch('/logout', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  await fetch("https://mlaguna.pythonanywhere.com/api/logout", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ token })
   });
 

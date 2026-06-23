@@ -11,9 +11,9 @@ async function loadTasks() {
     return;
   }
 
-  const res = await fetch('/tasks/load', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const res = await fetch("https://mlaguna.pythonanywhere.com/api/tasks/load", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ token })
   });
 
@@ -33,9 +33,9 @@ async function loadTasks() {
 async function saveTasks() {
   const token = localStorage.getItem("token");
 
-  await fetch('/tasks/save', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  await fetch("https://mlaguna.pythonanywhere.com/api/tasks/save", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ token, tasks })
   });
 }
