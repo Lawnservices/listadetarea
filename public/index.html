@@ -23,6 +23,23 @@
 
     <p>¿No tienes cuenta? <a href="register.html">Regístrate</a></p>
      </div>
+     <script>
+function guardar() {
+  const user = document.getElementById("user").value;
+  const pass = document.getElementById("pass").value;
+
+  fetch("https://mlaguna.pythonanywhere.com/api/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username: user,
+      password: pass
+    })
+  })
+  .then(res => res.json())
+  .then(data => alert(data.message));
+}
+</script>
 
     <script src="auth.js"></script>
 </body>
