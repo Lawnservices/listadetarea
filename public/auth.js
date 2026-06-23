@@ -46,7 +46,23 @@ async function login() {
 }
 
 // LOGOUT (solo borra token)
-function logout() {
+
+async function logout() {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("No hay sesión activa");
+    return;
+  }
+
+  await fetch("https://mlaguna.pythonanywhere.com/api/logout", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token })
+  });
+
   localStorage.removeItem("token");
   window.location.replace("login.html");
 }
+
+ 
