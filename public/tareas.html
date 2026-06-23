@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <meta name="description" content="aplicacion, guarda tus tareas, guardar notas, notas">
-     <meta name="author" content="Miguel Laguna">
+    <meta name="description" content="aplicacion, guarda tus tareas, guardar notas, notas">
+    <meta name="author" content="Miguel Laguna">
     <title>Tareas</title>
-    <link rel="stylesheet" href=" tareas.css">
+
+    <!-- CORREGIDO: sin espacio -->
+    <link rel="stylesheet" href="tareas.css">
 </head>
 <body>
+
     <h1>Mis tareas</h1>
 
     <button onclick="logout()">Cerrar sesión</button>
@@ -20,15 +23,17 @@
 
     <ul id="taskList"></ul>
 
-    <script src="auth.js"></script>
-    <script src="app.js"></script>
-
+    <!-- PRIMERO: verificar token -->
     <script>
-        // 🚨 Redirección automática si NO hay sesión
         const token = localStorage.getItem("token");
         if (!token) {
             window.location.href = "login.html";
         }
     </script>
+
+    <!-- DESPUÉS: cargar scripts -->
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+
 </body>
 </html>

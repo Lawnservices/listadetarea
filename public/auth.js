@@ -1,7 +1,7 @@
 // TOKEN GLOBAL
 let token = localStorage.getItem("token") || "";
 
-// REGISTRO
+// REGISTRO (solo usuario + contraseña)
 async function register() {
   const username = document.getElementById("user").value.trim();
   const password = document.getElementById("pass").value.trim();
@@ -13,12 +13,17 @@ async function register() {
   });
 
   const data = await res.json();
-  alert(data.ok ? "Registrado" : data.error);
 
-  if (data.ok) window.location.href = "login.html";
+  if (!data.ok) {
+    alert(data.error || "Error al registrar");
+    return;
+  }
+
+  alert("Registrado correctamente");
+  window.location.href = "login.html";
 }
 
-// LOGIN
+// LOGIN (solo usuario + contraseña)
 async function login() {
   const username = document.getElementById("user").value.trim();
   const password = document.getElementById("pass").value.trim();
@@ -32,7 +37,7 @@ async function login() {
   const data = await res.json();
 
   if (!data.ok) {
-    alert(data.error);
+    alert(data.error || "Error al iniciar sesión");
     return;
   }
 
@@ -40,16 +45,8 @@ async function login() {
   window.location.href = "tareas.html";
 }
 
-// LOGOUT
-async function logout() {
-  const token = localStorage.getItem("token");
-
-  await fetch("https://mlaguna.pythonanywhere.com/api/logout", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token })
-  });
-
+// LOGOUT (solo borra token)
+function logout() {
   localStorage.removeItem("token");
   window.location.href = "login.html";
 }
