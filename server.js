@@ -20,6 +20,10 @@ app.get("/login", (req, res) => {
 app.get("/register", (req, res) => {
   res.sendFile(path.join(__dirname, "public/register.html"));
 });
+// otra pagina wed
+app.get("/tareas", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/tareas.html"));
+});
 // Servidor funcionando
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
