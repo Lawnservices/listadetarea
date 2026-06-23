@@ -42,7 +42,7 @@ async function login() {
   }
 
   localStorage.setItem("token", data.token);
-  window.location.href = "tareas.html";
+  window.location.href = "/public/tareas";
 }
 
 // LOGOUT (solo borra token)
@@ -62,7 +62,7 @@ async function logout() {
   });
 
   localStorage.removeItem("token");
-  window.location.replace("login.html");
+  window.location.replace("/public/login");
 }
 
  
