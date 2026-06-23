@@ -48,5 +48,5 @@ async function login() {
 // LOGOUT (solo borra token)
 function logout() {
   localStorage.removeItem("token");
-  window.location.href = "login.html";
+  window.location.replace("login.html");
 }
