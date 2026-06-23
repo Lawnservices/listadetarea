@@ -17,8 +17,8 @@ app.get("/login", (req, res) => {
 });
 
 // otra página ejemplo
-app.get("/registro", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/registro.html"));
+app.get("/register", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/register.html"));
 });
 // Servidor funcionando
 app.listen(PORT, () => {
