@@ -65,13 +65,5 @@ async function logout() {
   window.location.replace("login");
 }
 
-// listo
-app.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/login.html"));
-});
 
  
-// otra pagina wed
-app.get("/tareas", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/tareas.html"));
-}); 
