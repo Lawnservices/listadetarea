@@ -1,4 +1,4 @@
-const taskInput = document.getElementById('taskInput');
+ const taskInput = document.getElementById('taskInput');
 const taskList = document.getElementById('taskList');
 
 let tasks = [];
@@ -6,48 +6,63 @@ let tasks = [];
 // CARGAR TAREAS
 async function loadTasks() {
   const token = localStorage.getItem("token");
+
   if (!token) {
     window.location.href = "login.html";
     return;
   }
 
-  const res = await fetch("https://mlaguna.pythonanywhere.com/api/tasks/load", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token })
-  });
+  try {
+    const res = await fetch("https://mlaguna.pythonanywhere.com/api/tasks/load", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token })
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (!data.ok) {
-    alert(data.error);
-    window.location.href = "login.html";
-    return;
+    if (!data.ok) {
+      alert(data.error || "Error cargando tareas");
+      window.location.href = "login.html";
+      return;
+    }
+
+    tasks = data.tasks || [];
+    renderTasks();
+
+  } catch (error) {
+    console.error("Error loadTasks:", error);
+    alert("Error de conexión");
   }
-
-  tasks = data.tasks;
-  renderTasks();
 }
 
-// GUARDAR TAREAS
+// GUARDAR TAREAS (con protección básica)
 async function saveTasks() {
   const token = localStorage.getItem("token");
 
-  await fetch("https://mlaguna.pythonanywhere.com/api/tasks/save", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token, tasks })
-  });
+  if (!token) return;
+
+  try {
+    await fetch("https://mlaguna.pythonanywhere.com/api/tasks/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token, tasks })
+    });
+  } catch (error) {
+    console.error("Error saveTasks:", error);
+  }
 }
 
 function renderTasks() {
   taskList.innerHTML = '';
+
   tasks.forEach((task, index) => {
     const li = document.createElement('li');
     li.className = task.completed ? 'completed' : '';
 
     const span = document.createElement('span');
     span.textContent = task.text;
+
     span.onclick = () => {
       task.completed = !task.completed;
       saveTasks();
@@ -56,6 +71,7 @@ function renderTasks() {
 
     const del = document.createElement('button');
     del.textContent = "Eliminar";
+
     del.onclick = () => {
       tasks.splice(index, 1);
       saveTasks();
@@ -70,14 +86,16 @@ function renderTasks() {
 
 function addTask() {
   const text = taskInput.value.trim();
+
   if (!text) return;
 
   tasks.push({ text, completed: false });
-  saveTasks();
-  renderTasks();
+
   taskInput.value = '';
+
+  renderTasks();
+  saveTasks();
 }
 
 // Cargar tareas al abrir la página
 loadTasks();
-
