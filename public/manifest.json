@@ -2,7 +2,9 @@
   "name": "Lista de Tareas",
   "short_name": "Tareas",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#4CAF50",
   "icons": [
