@@ -14,7 +14,15 @@ body{
     display:flex;
     flex-direction:column;
 }
-
+header{
+    background:#061125;
+    color:white;
+    padding:20px;
+    width:100%;
+}
+header h1{
+color: white;
+}
 nav{
     width:100%;
     padding:20px;

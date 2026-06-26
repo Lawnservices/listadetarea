@@ -18,6 +18,16 @@ body{
 display:flex;
 flex-direction:column;
 }
+
+header{
+    background:#061125;
+    color:white;
+    padding:20px;
+    width:100%;
+}
+header h1{
+color: white;
+}
 h1{
     color:white;
     font-size:2.5rem;
