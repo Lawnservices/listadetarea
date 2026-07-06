@@ -20,8 +20,11 @@
 <button type="button" onclick="logout()" id="salir">
     Cerrar sesión
 </button>
-    <hr>
-
+     
+    <form action="/borrar_cuenta" method="POST" onsubmit="return confirm('¿Seguro que quieres borrar tu cuenta?');">
+    <button type="submit" class="salir">Borrar cuenta</button>
+    </form>
+<hr>
     <input type="text" id="taskInput" placeholder="Escribe una tarea...">
     <button onclick="addTask()">Agregar tarea</button>
 

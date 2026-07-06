@@ -90,7 +90,16 @@ button[onclick="addTask()"]:hover{
 #salir:hover{
     background:#dc2626;
 }
-
+.salir{
+background:#04366e;
+    color:white;
+    position:absolute;
+    top:20px;
+    left:20px;
+}
+.salir:hover{
+background:#1b518f;
+}
 #taskList{
     width:100%;
     max-width:700px;
