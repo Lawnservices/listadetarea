@@ -21,14 +21,15 @@
     Cerrar sesión
 </button>
      
-<!-- <form id="deleteForm"
+
+ <form id="deleteForm"
       onsubmit="return false;">
 
     <button type="button" id="deleteAccount" class="salir">
         Borrar cuenta
     </button>
 
-</form> -->
+</form>
 
 <!-- <form id="deleteForm"
       action="https://mlaguna.pythonanywhere.com/borrar_cuenta"
@@ -49,21 +50,80 @@
     <ul id="taskList"></ul>
 
     
-<script>
+ 
+    <!-- DESPUÉS: cargar scripts -->
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script>
 function logout() {
     localStorage.removeItem("token");
     window.location.href = "login";
 
 }
+const deleteBtn = document.getElementById("deleteAccount");
 
- 
- 
+deleteBtn.addEventListener("click", function () {
 
- 
+    const confirmar = confirm("¿Seguro que quieres borrar tu cuenta?");
+
+    if (!confirmar) {
+        return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        alert("No hay sesión activa");
+        return;
+    }
+
+
+    fetch("https://mlaguna.pythonanywhere.com/borrar_cuenta", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            token: token
+        })
+
+    })
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        if (data.success) {
+
+            alert("Tu cuenta fue eliminada");
+
+            // borrar datos guardados del navegador
+            localStorage.removeItem("token");
+            localStorage.removeItem("user_id");
+
+            // enviar al login
+            window.location.href = "login.html";
+
+        } else {
+
+            alert(data.error);
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.log(error);
+        alert("Error del servidor");
+
+    });
+
+});
 </script>
-    <!-- DESPUÉS: cargar scripts -->
-    <script src="auth.js"></script>
-    <script src="app.js"></script>
 
 </body>
 </html>
