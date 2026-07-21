@@ -57,7 +57,7 @@
     <script>
 function logout() {
     localStorage.removeItem("token");
-    window.location.href = "index.html";
+    window.location.href = "index";
 
 }
 const deleteBtn = document.getElementById("deleteAccount");
@@ -105,7 +105,7 @@ deleteBtn.addEventListener("click", function () {
             localStorage.removeItem("user_id");
 
             // enviar al login
-            window.location.href = "index.html";
+            window.location.href = "index";
 
         } else {
 
