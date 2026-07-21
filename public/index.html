@@ -24,35 +24,82 @@
 <meta property="og:description" content="Organiza tu día con ListaDeTareas. Crea listas de tareas y administra tus pendientes de forma rápida, gratuita y desde cualquier dispositivo.">
 <meta name="keywords" content="lista de tareas, lista de pendientes, checklist, productividad, organizar tareas, tareas online, to do list, agenda, recordatorios, notas, ListaDeTareas">
      <link rel="manifest" href="manifest.json">
-     <link rel="stylesheet" href="registro.css">
+     <link rel="stylesheet" href="home.css">
      <title>Registro</title>
 </head>
 <body>
 <button id="installBtn" style="display:none;">
   Instalar App 📲
 </button>
-   <header>
-    <h2>ListaDeTareas.com</h2>
-</header>
-<div class="welcome-box">
-  <h2>¡Vamos a lograr cosas hoy!</h2>
-  <p>Agrega tus tareas y mantente al día.</p>
+<nav> 
+<div class="logo">
+  ListaDeTareas.com
+</div>    
+
+<div>
+<a href="/login">Entrar</a>
+<a href="/register">Crear cuenta</a>
+</div>
+</nav>
+ 
+<section class="hero">
+  <div class="contenido">
+    <h1>
+Organiza tu día con 
+<span>ListaDeTareas</span>
+</h1>
+
+<p class="descripcion">
+Crea, organiza y completa tus tareas fácilmente.
+Una aplicación rápida para tener todo bajo control.
+</p>
+
+
+<div class="lista">
+  <p>✅ Crea tus tareas</p>
+  <p>✅ Organiza tu día</p>
+  <p>✅ Guarda tus pendientes</p>
+  <p>✅ Funciona en celular</p>
+  <p>✅ Instálala como aplicación</p>
 </div>
 
-<div class="contenedor">
 
-    <h1>Crear cuenta</h1>
-
-    <input type="text" id="user" placeholder="Usuario">
-    <input type="email" id="email" placeholder="Correo electrónico">
-    <input type="password" id="pass" placeholder="Contraseña">
-
-    <button onclick="register()">Registrarse</button>
-
-    <p>¿Ya tienes cuenta? <a href="login">Inicia sesión</a></p>
-
+<div class="botones">
+  <a class="registro" href="/register">
+Comenzar gratis
+</a>
+<a class="login" href="/login">
+Iniciar sesión
+</a>
 </div>
+  </div>
+ 
 
+ <div class="app">
+<h2>
+Mis tareas
+</h2>
+
+
+<div class="tarea">
+☑ Cita médica
+</div>
+<div class="tarea">
+☐ Comprar materiales
+</div>
+<div class="tarea">
+☐ Organizar mi día
+</div>
+<div class="tarea">
+☑ Terminar proyecto
+</div>
+ 
+</section>
+ 
+
+<footer>
+  © 2026 ListaDeTareas - Organiza tu vida
+</footer>
     <script src="auth.js"></script>
 
 </body>

@@ -1,0 +1,257 @@
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#333;
+}
+
+
+/* NAV */
+
+nav{
+    width:100%;
+    padding:20px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:white;
+}
+
+.logo{
+    font-size:26px;
+    font-weight:bold;
+    color:#2563eb;
+}
+
+
+nav a{
+    text-decoration:none;
+    margin-left:20px;
+    color:#333;
+}
+
+
+/* HERO */
+
+.hero{
+
+    min-height:90vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 8%;
+}
+
+
+.contenido{
+
+    max-width:600px;
+}
+
+
+h1{
+
+    font-size:55px;
+    color:#111;
+    margin-bottom:20px;
+
+}
+
+
+h1 span{
+
+    color:#2563eb;
+
+}
+
+
+.descripcion{
+
+    font-size:20px;
+    color:#555;
+    margin-bottom:30px;
+
+}
+
+
+/* LISTA */
+
+.lista{
+
+    margin-bottom:35px;
+
+}
+
+
+.lista p{
+
+    font-size:18px;
+    margin:12px 0;
+
+}
+
+
+/* BOTONES */
+
+.botones a{
+
+    display:inline-block;
+    padding:15px 30px;
+    border-radius:10px;
+    text-decoration:none;
+    margin-right:10px;
+    font-weight:bold;
+
+}
+
+
+.registro{
+
+    background:#2563eb;
+    color:white;
+
+}
+.registro:hover{
+background-color: #8cabec;
+color: #111;
+}
+
+.login{
+
+    background:white;
+    color:#2563eb;
+    border:2px solid #2563eb;
+     
+}
+.login:hover{
+color: #111;
+}
+
+
+
+/* IMAGEN APP */
+
+
+.app{
+
+    width:350px;
+    height:500px;
+    background:white;
+    border-radius:30px;
+    box-shadow:0 20px 40px #0002;
+    padding:25px;
+    margin-left:50px;
+
+}
+
+
+.tarea{
+
+    background:#f1f5f9;
+    padding:15px;
+    margin:15px 0;
+    border-radius:10px;
+
+}
+
+
+.check{
+
+    color:green;
+
+}
+
+
+
+/* FOOTER */
+
+
+footer{
+
+    text-align:center;
+    padding:20px;
+    background:white;
+
+}
+
+
+
+/* CELULAR */
+
+
+ @media(max-width:800px){
+
+nav{
+    padding:15px 20px;
+    flex-direction:column;
+    gap:15px;
+}
+
+.logo{
+    font-size:24px;
+}
+
+nav div:last-child{
+    display:flex;
+    width:100%;
+    gap:10px;
+}
+
+nav div:last-child a{
+    flex:1;
+    text-align:center;
+    margin:0;
+    padding:12px;
+    background:#2563eb;
+    color:white;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.hero{
+    flex-direction:column;
+    text-align:center;
+    padding:30px 20px;
+}
+
+.contenido{
+    max-width:100%;
+}
+
+h1{
+    font-size:36px;
+}
+
+.descripcion{
+    font-size:18px;
+}
+
+.lista p{
+    font-size:17px;
+}
+
+.app{
+    margin:35px 0 0;
+    width:100%;
+    max-width:340px;
+    height:auto;
+}
+
+.botones{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.botones a{
+    display:block;
+    margin:0;
+}
+
+}
