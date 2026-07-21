@@ -14,16 +14,22 @@ body{
     display:flex;
     flex-direction:column;
 }
-header{
+ header{
     background:#061125;
     color:white;
-    padding:20px;
+    padding:20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width:100%;
 }
-header h1{
-color: white;
+ header nav a{
+  text-decoration:none;
+    margin-left:20px;
+    color:#fff;
+    font-size: 24px;
 }
-nav{
+nav .titulo{
     width:100%;
     padding:20px;
     text-align:center;

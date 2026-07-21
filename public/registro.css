@@ -16,8 +16,17 @@ body{
 header{
     background:#061125;
     color:white;
-    padding:20px;
+    padding:20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width:100%;
+}
+ header nav a{
+  text-decoration:none;
+    margin-left:20px;
+    color:#fff;
+    font-size: 24px;
 }
 .welcome-box {
   text-align: right;
