@@ -13,7 +13,7 @@ async function loadTasks() {
   }
 
   try {
-    const res = await fetch("https://mlaguna.pythonanywhere.com/api/tasks/load", {
+    const res = await fetch("https://www.creantunegocio.com/api/tasks/load", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token })
@@ -43,7 +43,7 @@ async function saveTasks() {
   if (!token) return;
 
   try {
-    await fetch("https://mlaguna.pythonanywhere.com/api/tasks/save", {
+    await fetch("https://www.creantunegocio.com/api/tasks/save", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token, tasks })
