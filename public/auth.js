@@ -7,7 +7,7 @@ async function register() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("pass").value.trim();
 
-  const res = await fetch("https://creantunegocio.com/api/register", {
+  const res = await fetch("https://mlaguna.pythonanywhere.com/api/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, email, password })
@@ -29,7 +29,7 @@ async function login() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("pass").value.trim();
 
-  const res = await fetch("https://creantunegocio.com/api/login", {
+  const res = await fetch("https://mlaguna.pythonanywhere.com/api/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password })
