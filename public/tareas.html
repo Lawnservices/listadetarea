@@ -1,133 +1,232 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description"
-            content="aplicacion, guarda tus tareas, guardar notas, notas">
-        <meta name="author" content="Miguel Laguna">
-        <title>Tareas ListaDeTareas | Organiza tu día y tus pendientes
-            gratis</title>
 
-        <!-- CORREGIDO: sin espacio -->
+    <head>
+
+        <meta charset="UTF-8">
+
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0">
+
+        <meta name="description"
+            content="Aplicación para guardar y organizar tus tareas y notas gratis">
+
+        <meta name="author"
+            content="Miguel Laguna">
+
+        <title>
+            Tareas ListaDeTareas | Organiza tu día y tus pendientes gratis
+        </title>
+
         <link rel="stylesheet" href="tareas.css">
+
     </head>
+
     <body>
 
         <h1>Mis tareas</h1>
 
-        <!-- <button type="button" onclick="logout()" id="salir">Cerrar sesión</button> -->
+        
 
-        <!-- <button type="button" onclick="window.location.href='login.html'" id="salir">Cerrar sesión</button> -->
-        <button type="button" onclick="logout()" id="salir">
+        <button
+            type="button"
+            onclick="logout()"
+            id="salir">
+
             Cerrar sesión
+
         </button>
 
-        <form id="deleteForm"
+         
+
+        <form
+            id="deleteForm"
             onsubmit="return false;">
 
-            <button type="button" id="deleteAccount" class="salir">
+            <button
+                type="button"
+                id="deleteAccount"
+                class="salir">
+
                 Borrar cuenta
+
             </button>
 
         </form>
 
-        <!-- <form id="deleteForm"
-      action="https://mlaguna.pythonanywhere.com/borrar_cuenta"
-      method="POST"
-      onsubmit="return confirm('¿Seguro que quieres borrar tu cuenta?');">
-
-    <input type="hidden" name="user_id" id="user_id">
-    <button type="submit" class="salir">Borrar cuenta</button>
-</form> -->
-
         <hr>
-        <input type="text" id="taskInput" autofocus placeholder="Escribe una tarea...">
-        <button onclick="addTask()">Agregar tarea</button>
+
+       
+
+        <input
+            type="text"
+            id="taskInput"
+            autofocus
+            placeholder="Escribe una tarea...">
+
+        <button
+            type="button"
+            onclick="addTask()">
+
+            Agregar tarea
+
+        </button>
+
+        
 
         <ul id="taskList"></ul>
 
-        <!-- DESPUÉS: cargar scripts -->
+    
+
         <script src="auth.js"></script>
         <script src="app.js"></script>
+
         <script>
-function logout() {
-    localStorage.removeItem("token");
-    window.location.href = "index";
 
-}
-const deleteBtn = document.getElementById("deleteAccount");
+        
 
-deleteBtn.addEventListener("click", function () {
+        function logout() {
 
-    const confirmar = confirm("¿Seguro que quieres borrar tu cuenta?");
-
-    if (!confirmar) {
-        return;
-    }
-
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-        alert("No hay sesión activa");
-        return;
-    }
-
-
-    fetch("https://www.creantunegocio.com/borrar_cuenta", {
-
-        method: "POST",
-
-        headers: {
-            "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-            token: token
-        })
-
-    })
-
-    .then(res => res.json())
-
-    .then(data => {
-
-        if (data.success) {
-
-            alert("Tu cuenta fue eliminada");
-
-            // borrar datos guardados del navegador
+            
             localStorage.removeItem("token");
             localStorage.removeItem("user_id");
 
-            // enviar al login
-            window.location.href = "index";
-
-        } else {
-
-            alert(data.error);
+          
+            window.location.replace("index");
 
         }
 
-    })
 
-    .catch(error => {
+      
 
-        console.log(error);
-        alert("Error del servidor");
+        window.addEventListener("pageshow", function () {
 
-    });
+            const token = localStorage.getItem("token");
 
-});
+            if (!token) {
 
-const edita = document.createElement('button');
-edita.textContent = "Editar";
-edita.className = "btn-editar";
+                window.location.replace("index");
 
-const del = document.createElement('button');
-del.textContent = "Eliminar";
-del.className = "btn-eliminar";
-</script>
+            }
+
+        });
+
+
+       
+
+        const deleteBtn =
+            document.getElementById("deleteAccount");
+
+
+        deleteBtn.addEventListener("click", function () {
+
+            const confirmar = confirm(
+                "¿Seguro que quieres borrar tu cuenta?"
+            );
+
+
+            if (!confirmar) {
+
+                return;
+
+            }
+
+
+            const token =
+                localStorage.getItem("token");
+
+
+            if (!token) {
+
+                alert("No hay sesión activa");
+
+                window.location.replace("index");
+
+                return;
+
+            }
+
+
+            fetch(
+                "https://www.creantunegocio.com/borrar_cuenta",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        token: token
+
+                    })
+
+                }
+
+            )
+
+            .then(res => res.json())
+
+            .then(data => {
+
+                if (data.success) {
+
+                    alert(
+                        "Tu cuenta fue eliminada"
+                    );
+
+
+                    
+
+                    localStorage.removeItem(
+                        "token"
+                    );
+
+                    localStorage.removeItem(
+                        "user_id"
+                    );
+
+
+                    
+
+                    window.location.replace(
+                        "index"
+                    );
+
+
+                } else {
+
+                    alert(
+                        data.error ||
+                        "No se pudo borrar la cuenta"
+                    );
+
+                }
+
+            })
+
+            .catch(error => {
+
+                console.error(
+                    "Error:",
+                    error
+                );
+
+                alert(
+                    "Error del servidor"
+                );
+
+            });
+
+        });
+
+    </script>
 
     </body>
+
 </html>
