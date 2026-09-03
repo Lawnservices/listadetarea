@@ -42,7 +42,7 @@
 </form> -->
 
         <hr>
-        <input type="text" id="taskInput" placeholder="Escribe una tarea...">
+        <input type="text" id="taskInput" autofocus placeholder="Escribe una tarea...">
         <button onclick="addTask()">Agregar tarea</button>
 
         <ul id="taskList"></ul>
@@ -119,6 +119,14 @@ deleteBtn.addEventListener("click", function () {
     });
 
 });
+
+const edita = document.createElement('button');
+edita.textContent = "Editar";
+edita.className = "btn-editar";
+
+const del = document.createElement('button');
+del.textContent = "Eliminar";
+del.className = "btn-eliminar";
 </script>
 
     </body>

@@ -52,7 +52,6 @@ async function saveTasks() {
     console.error("Error saveTasks:", error);
   }
 }
-
 function renderTasks() {
   taskList.innerHTML = '';
 
@@ -60,6 +59,7 @@ function renderTasks() {
     const li = document.createElement('li');
     li.className = task.completed ? 'completed' : '';
 
+    // TEXTO DE LA TAREA
     const span = document.createElement('span');
     span.textContent = task.text;
 
@@ -69,6 +69,70 @@ function renderTasks() {
       renderTasks();
     };
 
+    // BOTÓN EDITAR
+    const edita = document.createElement('button');
+    edita.textContent = "Editar";
+
+    edita.onclick = () => {
+
+      // Crear campo para editar
+      const input = document.createElement('input');
+
+      input.type = 'text';
+      input.value = task.text;
+      input.className = 'edit-task-input';
+
+      // Botón Guardar
+      const guardar = document.createElement('button');
+      guardar.textContent = "Guardar";
+
+      // Botón Cancelar
+      const cancelar = document.createElement('button');
+      cancelar.textContent = "Cancelar";
+
+      // Limpiar la tarea actual
+      li.innerHTML = '';
+
+      li.appendChild(input);
+      li.appendChild(guardar);
+      li.appendChild(cancelar);
+
+      input.focus();
+
+      // GUARDAR CAMBIOS
+      guardar.onclick = () => {
+        const nuevoTexto = input.value.trim();
+
+        if (!nuevoTexto) {
+          alert("La tarea no puede estar vacía.");
+          input.focus();
+          return;
+        }
+
+        task.text = nuevoTexto;
+
+        saveTasks();
+        renderTasks();
+      };
+
+      // CANCELAR
+      cancelar.onclick = () => {
+        renderTasks();
+      };
+
+      // También guardar presionando Enter
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          guardar.click();
+        }
+
+        if (event.key === 'Escape') {
+          cancelar.click();
+        }
+      });
+    };
+
+    // BOTÓN ELIMINAR
     const del = document.createElement('button');
     del.textContent = "Eliminar";
 
@@ -79,11 +143,14 @@ function renderTasks() {
     };
 
     li.appendChild(span);
+    li.appendChild(edita);
     li.appendChild(del);
+
     taskList.appendChild(li);
   });
 }
 
+// ariva nuevo
 function addTask() {
   const text = taskInput.value.trim();
 
