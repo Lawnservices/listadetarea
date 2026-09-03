@@ -1,37 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="aplicacion, guarda tus tareas, guardar notas, notas">
-    <meta name="author" content="Miguel Laguna">
-    <title>Tareas ListaDeTareas | Organiza tu día y tus pendientes gratis</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+            content="aplicacion, guarda tus tareas, guardar notas, notas">
+        <meta name="author" content="Miguel Laguna">
+        <title>Tareas ListaDeTareas | Organiza tu día y tus pendientes
+            gratis</title>
 
-    <!-- CORREGIDO: sin espacio -->
-    <link rel="stylesheet" href="tareas.css">
-</head>
-<body>
+        <!-- CORREGIDO: sin espacio -->
+        <link rel="stylesheet" href="tareas.css">
+    </head>
+    <body>
 
-    <h1>Mis tareas</h1>
+        <h1>Mis tareas</h1>
 
-    <!-- <button type="button" onclick="logout()" id="salir">Cerrar sesión</button> -->
+        <!-- <button type="button" onclick="logout()" id="salir">Cerrar sesión</button> -->
 
-    <!-- <button type="button" onclick="window.location.href='login.html'" id="salir">Cerrar sesión</button> -->
-<button type="button" onclick="logout()" id="salir">
-    Cerrar sesión
-</button>
-     
+        <!-- <button type="button" onclick="window.location.href='login.html'" id="salir">Cerrar sesión</button> -->
+        <button type="button" onclick="logout()" id="salir">
+            Cerrar sesión
+        </button>
 
- <form id="deleteForm"
-      onsubmit="return false;">
+        <form id="deleteForm"
+            onsubmit="return false;">
 
-    <button type="button" id="deleteAccount" class="salir">
-        Borrar cuenta
-    </button>
+            <button type="button" id="deleteAccount" class="salir">
+                Borrar cuenta
+            </button>
 
-</form>
+        </form>
 
-<!-- <form id="deleteForm"
+        <!-- <form id="deleteForm"
       action="https://mlaguna.pythonanywhere.com/borrar_cuenta"
       method="POST"
       onsubmit="return confirm('¿Seguro que quieres borrar tu cuenta?');">
@@ -40,21 +41,16 @@
     <button type="submit" class="salir">Borrar cuenta</button>
 </form> -->
 
+        <hr>
+        <input type="text" id="taskInput" placeholder="Escribe una tarea...">
+        <button onclick="addTask()">Agregar tarea</button>
 
+        <ul id="taskList"></ul>
 
-
-<hr>
-    <input type="text" id="taskInput" placeholder="Escribe una tarea...">
-    <button onclick="addTask()">Agregar tarea</button>
-
-    <ul id="taskList"></ul>
-
-    
- 
-    <!-- DESPUÉS: cargar scripts -->
-    <script src="auth.js"></script>
-    <script src="app.js"></script>
-    <script>
+        <!-- DESPUÉS: cargar scripts -->
+        <script src="auth.js"></script>
+        <script src="app.js"></script>
+        <script>
 function logout() {
     localStorage.removeItem("token");
     window.location.href = "index";
@@ -78,7 +74,7 @@ deleteBtn.addEventListener("click", function () {
     }
 
 
-    fetch("https://mlaguna.pythonanywhere.com/borrar_cuenta", {
+    fetch("https://www.creantunegocio.com/borrar_cuenta", {
 
         method: "POST",
 
@@ -125,5 +121,5 @@ deleteBtn.addEventListener("click", function () {
 });
 </script>
 
-</body>
+    </body>
 </html>
