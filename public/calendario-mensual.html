@@ -1,0 +1,669 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendario Mensual | ListaDeTareas</title>
+
+<style>
+:root {
+    --verde: #087f5b;
+    --azul: #173b68;
+    --fondo: #f3f6fa;
+    --borde: #e2e8f0;
+    --gris: #667085;
+}
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--fondo);
+    color: #263247;
+}
+header {
+    background: white;
+    padding: 18px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--borde);
+    gap: 12px;
+}
+.logo { color: var(--azul); font-weight: bold; font-size: 21px; }
+.logo span { color: var(--verde); }
+header a { color: var(--gris); text-decoration: none; }
+main { max-width: 1150px; margin: 30px auto; padding: 0 18px 40px; }
+h1 { color: var(--azul); font-size: clamp(26px, 4vw, 36px); margin-bottom: 8px; }
+.descripcion { color: var(--gris); line-height: 1.6; margin-bottom: 25px; }
+.panel {
+    background: white; padding: 22px; border: 1px solid var(--borde);
+    border-radius: 15px; margin-bottom: 20px;
+    box-shadow: 0 4px 14px rgba(20,40,70,.04);
+}
+.controles {
+    display: flex; flex-wrap: wrap; justify-content: space-between;
+    align-items: center; gap: 14px;
+}
+.navegacion { display: flex; align-items: center; gap: 12px; }
+.navegacion button {
+    background: #f3f6fa; border: 1px solid var(--borde);
+    border-radius: 8px; padding: 10px 14px; cursor: pointer; font-size: 18px;
+}
+#mesAnio { color: var(--azul); font-size: 23px; min-width: 190px; text-align: center; }
+.boton {
+    border: none; border-radius: 8px; padding: 12px 16px;
+    background: var(--verde); color: white; font-weight: bold; cursor: pointer;
+}
+.boton:hover { background: #066849; }
+.boton:disabled { opacity: .6; cursor: wait; }
+.secundario { background: white; color: var(--azul); border: 1px solid var(--borde); }
+.calendario { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+.dia-semana { text-align: center; font-size: 13px; font-weight: bold; color: var(--gris); padding: 10px 0; }
+.celda {
+    min-height: 110px; border: 1px solid var(--borde); border-radius: 10px;
+    padding: 9px; background: white; cursor: pointer; min-width: 0;
+    transition: border-color .15s, background .15s;
+}
+.celda:hover { border-color: var(--verde); background: #f7fcf9; }
+.celda.vacia { background: #f8fafc; cursor: default; }
+.celda.hoy { border: 2px solid var(--verde); background: #f0fbf6; }
+.numero { font-size: 14px; font-weight: bold; margin-bottom: 9px; }
+.evento {
+    background: #e1f6eb; color: #087f5b; font-size: 11px;
+    padding: 5px; border-radius: 5px; margin-top: 4px; overflow-wrap: anywhere;
+}
+.evento.azul { background: #e5efff; color: #2456a6; }
+.evento.morado { background: #f0e9ff; color: #7044a5; }
+.resumen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.estadistica { background: #f7f9fc; padding: 18px; border-radius: 10px; }
+.estadistica span { color: var(--gris); font-size: 13px; }
+.estadistica strong { display: block; font-size: 25px; color: var(--azul); margin-top: 8px; }
+.formulario label { display: block; font-size: 13px; font-weight: bold; margin: 14px 0 7px; }
+.formulario input:not([type="checkbox"]), .formulario select {
+    width: 100%; padding: 12px; border: 1px solid var(--borde);
+    border-radius: 8px; font-size: 15px; background: white;
+}
+.fila { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.acciones { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.recordatorio {
+    display: flex; justify-content: space-between; gap: 12px;
+    align-items: center; padding: 12px 0; border-bottom: 1px solid var(--borde);
+}
+.recordatorio-texto { overflow-wrap: anywhere; }
+footer { text-align: center; padding: 24px; color: var(--gris); background: white; font-size: 13px; }
+.modal {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    padding: 18px; background: rgba(15,25,45,.65);
+    align-items: center; justify-content: center; overflow-y: auto;
+}
+.modal.abierto { display: flex; }
+.modal-caja {
+    position: relative; width: 100%; max-width: 440px;
+    padding: 28px; background: white; border-radius: 16px; margin: auto;
+}
+.cerrar {
+    position: absolute; right: 12px; top: 10px; border: none;
+    background: #f0f2f6; border-radius: 50%; width: 34px;
+    height: 34px; font-size: 24px; cursor: pointer;
+}
+.modal-caja h2 { color: var(--azul); }
+#mensaje, #estado { color: var(--gris); font-size: 13px; }
+body.modal-activo { overflow: hidden; }
+.error { color: #b42318 !important; }
+@media (max-width: 700px) {
+    main { padding: 0 10px 30px; }
+    .panel { padding: 13px; }
+    .calendario { gap: 3px; }
+    .dia-semana { font-size: 10px; }
+    .celda { min-height: 75px; padding: 4px; border-radius: 5px; }
+    .numero { font-size: 12px; }
+    .evento { font-size: 9px; padding: 3px; }
+    .resumen { grid-template-columns: 1fr; }
+    #mesAnio { min-width: 150px; font-size: 18px; }
+    .navegacion { gap: 5px; }
+    .navegacion button { padding: 8px; }
+    .modal-caja { padding: 24px 18px; }
+}
+@media print {
+    header, .controles button, .acciones, footer, .boton, #estado { display: none !important; }
+    body { background: white; }
+    main { margin: 0; max-width: none; }
+    .celda { min-height: 90px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+    <div class="logo">✓ ListaDe<span>Tareas</span></div>
+    <a href="/tareas">← Mis tareas</a>
+</header>
+
+<main>
+    <h1>🗓️ Mi calendario mensual</h1>
+    <p class="descripcion">
+        Organiza tus citas, tareas, pagos y objetivos.
+        Selecciona cualquier día para añadir un evento.
+    </p>
+
+    <section class="panel">
+        <div class="controles">
+            <div class="navegacion">
+                <button id="anterior" aria-label="Mes anterior">‹</button>
+                <h2 id="mesAnio"></h2>
+                <button id="siguiente" aria-label="Mes siguiente">›</button>
+            </div>
+            <button class="boton secundario" id="hoy">Ir a hoy</button>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="calendario" id="calendario"></div>
+    </section>
+
+    <section class="resumen">
+        <div class="estadistica">
+            <span>Eventos del mes</span>
+            <strong id="totalEventos">0</strong>
+        </div>
+        <div class="estadistica">
+            <span>Días con actividades</span>
+            <strong id="diasOcupados">0</strong>
+        </div>
+        <div class="estadistica">
+            <span>Eventos pendientes</span>
+            <strong id="pendientes">0</strong>
+        </div>
+    </section>
+
+    <section class="panel" style="margin-top:20px">
+        <h2 style="color:#173b68">📌 Recordatorios del mes</h2>
+        <p style="color:#667085;font-size:14px">
+            Selecciona un día para crear o revisar tus recordatorios.
+        </p>
+        <div id="listaRecordatorios"></div>
+        <div class="acciones">
+            <button class="boton" id="guardar">↻ Actualizar calendario</button>
+            <button class="boton secundario" id="imprimir">🖨️ Imprimir / Guardar PDF</button>
+        </div>
+        <p id="estado" role="status" aria-live="polite">Conectando con el servidor...</p>
+    </section>
+</main>
+
+<footer>© 2026 ListaDeTareas · Organiza tu tiempo.</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true"
+     aria-labelledby="tituloModal" aria-hidden="true">
+    <div class="modal-caja">
+        <button class="cerrar" id="cerrar" aria-label="Cerrar ventana">&times;</button>
+        <h2 id="tituloModal">Añadir evento</h2>
+        <p id="fechaSeleccionada"></p>
+
+        <form id="formulario" class="formulario">
+            <label for="nombreEvento">Nombre del evento</label>
+            <input id="nombreEvento" maxlength="120"
+                   placeholder="Ej. Pagar la electricidad" required>
+
+            <div class="fila">
+                <div>
+                    <label for="horaEvento">Hora</label>
+                    <input id="horaEvento" type="time">
+                </div>
+                <div>
+                    <label for="tipoEvento">Categoría</label>
+                    <select id="tipoEvento">
+                        <option value="verde">Personal</option>
+                        <option value="azul">Trabajo</option>
+                        <option value="morado">Importante</option>
+                    </select>
+                </div>
+            </div>
+
+            <label for="eventoCompletado">
+                <input type="checkbox" id="eventoCompletado" style="width:auto">
+                Evento completado
+            </label>
+
+            <div class="acciones">
+                <button class="boton" id="guardarEvento" type="submit">Guardar evento</button>
+                <button class="boton secundario" type="button" id="cancelar">Cancelar</button>
+                <button class="boton secundario" type="button" id="eliminarEvento" style="display:none">Eliminar</button>
+            </div>
+            <p id="mensaje" role="status" aria-live="polite"></p>
+        </form>
+    </div>
+</div>
+
+<script>
+"use strict";
+
+/*
+ * Estas rutas deben coincidir con las rutas Flask instaladas en el servidor.
+ * La API recibe el token dentro del JSON, igual que /api/tasks/load.
+ */
+const API = "https://www.creantunegocio.com/api/calendar/events";
+
+const calendario = document.getElementById("calendario");
+const modal = document.getElementById("modal");
+const formulario = document.getElementById("formulario");
+const estado = document.getElementById("estado");
+const mensaje = document.getElementById("mensaje");
+const botonGuardarEvento = document.getElementById("guardarEvento");
+const botonEliminarEvento = document.getElementById("eliminarEvento");
+
+let fechaVista = new Date();
+fechaVista.setDate(1);
+
+let fechaActiva = "";
+let idEditando = null;
+let eventos = [];
+let cargando = false;
+
+const nombresMeses = [
+    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+
+function obtenerToken() {
+    return localStorage.getItem("token") || "";
+}
+
+function mostrarEstado(texto, error = false) {
+    estado.textContent = texto;
+    estado.classList.toggle("error", error);
+}
+
+function mostrarMensaje(texto, error = false) {
+    mensaje.textContent = texto;
+    mensaje.classList.toggle("error", error);
+}
+
+function fechaLocal(fecha) {
+    return `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, "0")}-${String(fecha.getDate()).padStart(2, "0")}`;
+}
+
+function fechaBonita(fecha) {
+    return new Date(fecha + "T12:00:00").toLocaleDateString("es-ES", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
+}
+
+function validarEvento(evento) {
+    return evento &&
+        typeof evento.fecha === "string" &&
+        typeof evento.nombre === "string" &&
+        ["verde", "azul", "morado"].includes(evento.tipo);
+}
+
+async function solicitarAPI(ruta, metodo, datos = {}) {
+    const token = obtenerToken();
+
+    if (!token) {
+        window.location.replace("login.html");
+        throw new Error("Debes iniciar sesión.");
+    }
+
+    let respuesta;
+
+    try {
+        respuesta = await fetch(ruta, {
+            method: metodo,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...datos, token })
+        });
+    } catch (error) {
+        throw new Error(
+            "No se pudo conectar con el servidor. Comprueba tu conexión y la configuración CORS de la API."
+        );
+    }
+
+    let resultado;
+
+    try {
+        resultado = await respuesta.json();
+    } catch {
+        throw new Error("El servidor no devolvió una respuesta JSON válida.");
+    }
+
+    if (respuesta.status === 401) {
+        localStorage.removeItem("token");
+        window.location.replace("login.html");
+        throw new Error("Tu sesión ha expirado. Inicia sesión de nuevo.");
+    }
+
+    if (!respuesta.ok || resultado.ok !== true) {
+        throw new Error(resultado.error || `Error del servidor (${respuesta.status}).`);
+    }
+
+    return resultado;
+}
+
+async function cargarEventosAPI() {
+    if (cargando) return;
+
+    cargando = true;
+    mostrarEstado("Cargando eventos desde MySQL...");
+
+    try {
+        const resultado = await solicitarAPI(API, "POST");
+
+        if (!Array.isArray(resultado.events)) {
+            throw new Error("La API no devolvió una lista válida de eventos.");
+        }
+
+        eventos = resultado.events
+            .filter(validarEvento)
+            .map(evento => ({
+                ...evento,
+                id: Number(evento.id),
+                hora: evento.hora || "",
+                completado: Boolean(evento.completado)
+            }));
+
+        dibujarCalendario();
+        mostrarEstado("✓ Eventos cargados correctamente desde MySQL.");
+    } catch (error) {
+        mostrarEstado(error.message, true);
+        console.error("Error cargando el calendario:", error);
+        throw error;
+    } finally {
+        cargando = false;
+    }
+}
+
+function dibujarCalendario() {
+    calendario.replaceChildren();
+
+    document.getElementById("mesAnio").textContent =
+        nombresMeses[fechaVista.getMonth()] + " " + fechaVista.getFullYear();
+
+    ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"].forEach(nombre => {
+        const cabecera = document.createElement("div");
+        cabecera.className = "dia-semana";
+        cabecera.textContent = nombre;
+        calendario.appendChild(cabecera);
+    });
+
+    const anio = fechaVista.getFullYear();
+    const mes = fechaVista.getMonth();
+    const primerDia = new Date(anio, mes, 1);
+    const ultimoDia = new Date(anio, mes + 1, 0).getDate();
+    const desplazamiento = (primerDia.getDay() + 6) % 7;
+    const hoy = fechaLocal(new Date());
+
+    for (let i = 0; i < desplazamiento; i++) {
+        const vacia = document.createElement("div");
+        vacia.className = "celda vacia";
+        calendario.appendChild(vacia);
+    }
+
+    for (let numero = 1; numero <= ultimoDia; numero++) {
+        const fecha = `${anio}-${String(mes + 1).padStart(2, "0")}-${String(numero).padStart(2, "0")}`;
+        const celda = document.createElement("div");
+        celda.className = "celda";
+
+        if (fecha === hoy) celda.classList.add("hoy");
+
+        const numeroDia = document.createElement("div");
+        numeroDia.className = "numero";
+        numeroDia.textContent = numero;
+        celda.appendChild(numeroDia);
+
+        const delDia = eventos.filter(e => e.fecha === fecha);
+
+        delDia.slice(0, 3).forEach(evento => {
+            const etiqueta = document.createElement("div");
+            etiqueta.className = "evento " + evento.tipo;
+            etiqueta.textContent =
+                (evento.hora ? evento.hora + " " : "") + evento.nombre;
+
+            if (evento.completado) {
+                etiqueta.style.textDecoration = "line-through";
+                etiqueta.style.opacity = ".6";
+            }
+
+            celda.appendChild(etiqueta);
+        });
+
+        if (delDia.length > 3) {
+            const mas = document.createElement("div");
+            mas.className = "evento";
+            mas.textContent = `+${delDia.length - 3} más`;
+            celda.appendChild(mas);
+        }
+
+        celda.addEventListener("click", () => abrirModal(fecha));
+        calendario.appendChild(celda);
+    }
+
+    actualizarResumen();
+    dibujarRecordatorios();
+}
+
+function abrirModal(fecha, id = null) {
+    fechaActiva = fecha;
+    idEditando = id;
+
+    const evento = id !== null
+        ? eventos.find(e => Number(e.id) === Number(id))
+        : null;
+
+    if (id !== null && !evento) {
+        mostrarEstado("No se encontró ese evento. Actualiza el calendario.", true);
+        return;
+    }
+
+    document.getElementById("tituloModal").textContent =
+        evento ? "Editar evento" : "Añadir evento";
+
+    document.getElementById("fechaSeleccionada").textContent = fechaBonita(fecha);
+    document.getElementById("nombreEvento").value = evento?.nombre || "";
+    document.getElementById("horaEvento").value = evento?.hora || "";
+    document.getElementById("tipoEvento").value = evento?.tipo || "verde";
+    document.getElementById("eventoCompletado").checked =
+        Boolean(evento?.completado);
+
+    botonEliminarEvento.style.display = evento ? "inline-block" : "none";
+    botonGuardarEvento.disabled = false;
+    mostrarMensaje("");
+
+    modal.classList.add("abierto");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-activo");
+    document.getElementById("nombreEvento").focus();
+}
+
+function cerrarModal() {
+    modal.classList.remove("abierto");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-activo");
+    formulario.reset();
+    idEditando = null;
+}
+
+formulario.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (botonGuardarEvento.disabled) return;
+
+    const nombre = document.getElementById("nombreEvento").value.trim();
+
+    if (!nombre) {
+        mostrarMensaje("Escribe el nombre del evento.", true);
+        return;
+    }
+
+    const datos = {
+        fecha: fechaActiva,
+        nombre,
+        hora: document.getElementById("horaEvento").value,
+        tipo: document.getElementById("tipoEvento").value,
+        completado: document.getElementById("eventoCompletado").checked
+    };
+
+    botonGuardarEvento.disabled = true;
+    mostrarMensaje("Guardando en MySQL...");
+
+    try {
+        if (idEditando !== null) {
+            await solicitarAPI(`${API}/${encodeURIComponent(idEditando)}`, "PUT", datos);
+        } else {
+            await solicitarAPI(`${API}/create`, "POST", datos);
+        }
+
+        cerrarModal();
+        await cargarEventosAPI();
+        mostrarEstado("✓ Evento guardado correctamente en MySQL.");
+    } catch (error) {
+        mostrarMensaje(error.message, true);
+        console.error("Error guardando evento:", error);
+    } finally {
+        botonGuardarEvento.disabled = false;
+    }
+});
+
+botonEliminarEvento.addEventListener("click", async () => {
+    if (idEditando === null || botonEliminarEvento.disabled) return;
+
+    if (!confirm("¿Seguro que quieres eliminar este evento?")) return;
+
+    botonEliminarEvento.disabled = true;
+    mostrarMensaje("Eliminando evento...");
+
+    try {
+        await solicitarAPI(
+            `${API}/${encodeURIComponent(idEditando)}/delete`,
+            "POST"
+        );
+
+        cerrarModal();
+        await cargarEventosAPI();
+        mostrarEstado("✓ Evento eliminado correctamente de MySQL.");
+    } catch (error) {
+        mostrarMensaje(error.message, true);
+        console.error("Error eliminando evento:", error);
+    } finally {
+        botonEliminarEvento.disabled = false;
+    }
+});
+
+document.getElementById("cerrar").addEventListener("click", cerrarModal);
+document.getElementById("cancelar").addEventListener("click", cerrarModal);
+
+modal.addEventListener("click", event => {
+    if (event.target === modal) cerrarModal();
+});
+
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && modal.classList.contains("abierto")) {
+        cerrarModal();
+    }
+});
+
+document.getElementById("anterior").addEventListener("click", () => {
+    fechaVista.setMonth(fechaVista.getMonth() - 1);
+    dibujarCalendario();
+});
+
+document.getElementById("siguiente").addEventListener("click", () => {
+    fechaVista.setMonth(fechaVista.getMonth() + 1);
+    dibujarCalendario();
+});
+
+document.getElementById("hoy").addEventListener("click", () => {
+    fechaVista = new Date();
+    fechaVista.setDate(1);
+    dibujarCalendario();
+});
+
+document.getElementById("guardar").addEventListener("click", async () => {
+    try {
+        await cargarEventosAPI();
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+document.getElementById("imprimir").addEventListener("click", () => {
+    window.print();
+});
+
+function actualizarResumen() {
+    const anio = fechaVista.getFullYear();
+    const mes = fechaVista.getMonth();
+
+    const delMes = eventos.filter(e => {
+        const fecha = new Date(e.fecha + "T12:00:00");
+        return fecha.getFullYear() === anio && fecha.getMonth() === mes;
+    });
+
+    document.getElementById("totalEventos").textContent = delMes.length;
+    document.getElementById("diasOcupados").textContent =
+        new Set(delMes.map(e => e.fecha)).size;
+    document.getElementById("pendientes").textContent =
+        delMes.filter(e => !e.completado).length;
+}
+
+function dibujarRecordatorios() {
+    const contenedor = document.getElementById("listaRecordatorios");
+    contenedor.replaceChildren();
+
+    const anio = fechaVista.getFullYear();
+    const mes = fechaVista.getMonth();
+
+    const delMes = eventos
+        .filter(e => {
+            const fecha = new Date(e.fecha + "T12:00:00");
+            return fecha.getFullYear() === anio && fecha.getMonth() === mes;
+        })
+        .sort((a, b) =>
+            (a.fecha + a.hora).localeCompare(b.fecha + b.hora)
+        );
+
+    if (delMes.length === 0) {
+        contenedor.textContent = "Todavía no hay eventos este mes.";
+        contenedor.style.color = "#667085";
+        return;
+    }
+
+    delMes.forEach(evento => {
+        const fila = document.createElement("div");
+        fila.className = "recordatorio";
+
+        const texto = document.createElement("span");
+        texto.className = "recordatorio-texto";
+
+        const fechaCorta = new Date(evento.fecha + "T12:00:00")
+            .toLocaleDateString("es-ES", { day: "numeric", month: "short" });
+
+        texto.textContent =
+            `${fechaCorta} · ${evento.hora ? evento.hora + " · " : ""}${evento.nombre}`;
+
+        if (evento.completado) texto.style.textDecoration = "line-through";
+
+        const editar = document.createElement("button");
+        editar.className = "boton secundario";
+        editar.textContent = "Editar";
+        editar.addEventListener("click", () => abrirModal(evento.fecha, evento.id));
+
+        fila.append(texto, editar);
+        contenedor.appendChild(fila);
+    });
+}
+
+/* No se carga ningún calendario antiguo desde localStorage.
+   La fuente de verdad es MySQL para la cuenta autenticada. */
+if (!obtenerToken()) {
+    window.location.replace("login.html");
+} else {
+    cargarEventosAPI().catch(error => {
+        console.error("No se pudo iniciar el calendario:", error);
+    });
+}
+</script>
+</body>
+</html>

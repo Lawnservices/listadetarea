@@ -33,6 +33,10 @@ app.get("/register", (req, res) => {
 app.get("/tareas", (req, res) => {
   res.sendFile(path.join(__dirname, "public/tareas.html"));
 });
+// calendario mensual
+app.get("/calendario", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/calendario-mensual.html"));
+});
 // Servidor funcionando
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
