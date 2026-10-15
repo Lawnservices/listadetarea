@@ -365,7 +365,7 @@ async function cargarEventosAPI() {
             }));
 
         dibujarCalendario();
-        mostrarEstado("✓ Eventos cargados correctamente desde MySQL.");
+        mostrarEstado("✓ Eventos cargados correctamente desde {..}...");
     } catch (error) {
         mostrarEstado(error.message, true);
         console.error("Error cargando el calendario:", error);
