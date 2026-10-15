@@ -506,7 +506,7 @@ formulario.addEventListener("submit", async event => {
     };
 
     botonGuardarEvento.disabled = true;
-    mostrarMensaje("Guardando en MySQL...");
+    mostrarMensaje("Guardando en {..}...");
 
     try {
         if (idEditando !== null) {
@@ -517,7 +517,7 @@ formulario.addEventListener("submit", async event => {
 
         cerrarModal();
         await cargarEventosAPI();
-        mostrarEstado("✓ Evento guardado correctamente en MySQL.");
+        mostrarEstado("✓ Evento guardado correctamente en {..}.");
     } catch (error) {
         mostrarMensaje(error.message, true);
         console.error("Error guardando evento:", error);
@@ -542,7 +542,7 @@ botonEliminarEvento.addEventListener("click", async () => {
 
         cerrarModal();
         await cargarEventosAPI();
-        mostrarEstado("✓ Evento eliminado correctamente de MySQL.");
+        mostrarEstado("✓ Evento eliminado correctamente de {..}...");
     } catch (error) {
         mostrarMensaje(error.message, true);
         console.error("Error eliminando evento:", error);
