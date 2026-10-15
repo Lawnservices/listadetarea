@@ -346,7 +346,7 @@ async function cargarEventosAPI() {
     if (cargando) return;
 
     cargando = true;
-    mostrarEstado("Cargando eventos desde MySQL...");
+    mostrarEstado("Cargando eventos desde {..}...");
 
     try {
         const resultado = await solicitarAPI(API, "POST");
