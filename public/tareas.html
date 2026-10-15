@@ -19,14 +19,34 @@
         </title>
 
         <link rel="stylesheet" href="tareas.css">
+        <style>
+.btn-calendario {
+    display: inline-block;
+    background: #2563eb;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px 0;
+    transition: background 0.3s;
+}
 
+.btn-calendario:hover {
+    background: #1d4ed8;
+}
+</style>
     </head>
 
+    
     <body>
 
         <h1>Mis tareas</h1>
 
-        
+        <a href="/calendario" class="btn-calendario">
+         📅 Calendario mensual
+        </a>
 
         <button
             type="button"
