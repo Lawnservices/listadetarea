@@ -658,13 +658,58 @@ function dibujarRecordatorios() {
 
 /* No se carga ningún calendario antiguo desde localStorage.
    La fuente de verdad es MySQL para la cuenta autenticada. */
-if (!obtenerToken()) {
-    window.location.replace("login.html");
-} else {
-    cargarEventosAPI().catch(error => {
-        console.error("No se pudo iniciar el calendario:", error);
-    });
+   
+// if (!obtenerToken()) {
+//     window.location.replace("login.html");
+// } else {
+//     cargarEventosAPI().catch(error => {
+//         console.error("No se pudo iniciar el calendario:", error);
+//     });
+// }
+
+// esto es para verificar si esta secion activa
+async function comprobarSesionCalendario() {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        window.location.replace("/index");
+        return;
+    }
+
+    try {
+        const respuesta = await fetch(
+            "https://www.creantunegocio.com/api/calendar/events",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ token }),
+                cache: "no-store"
+            }
+        );
+
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok || datos.ok !== true) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user_id");
+            window.location.replace("/index");
+            return;
+        }
+
+        // La sesión sigue siendo válida.
+        await cargarEventosAPI();
+
+    } catch (error) {
+        console.error("No se pudo verificar la sesión:", error);
+        document.getElementById("estado").textContent =
+            "No se pudo verificar la sesión. Recarga la página.";
+    }
 }
+
+window.addEventListener("pageshow", comprobarSesionCalendario);
+
 </script>
 </body>
 </html>

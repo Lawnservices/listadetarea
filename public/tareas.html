@@ -116,38 +116,65 @@
 
         // }
 
-            
+
+
 async function logout() {
     const token = localStorage.getItem("token");
 
     try {
         if (token) {
-            await fetch(
-                "https://www.creantunegocio.com/api/logout",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ token })
-                }
-            );
+            await fetch("https://www.creantunegocio.com/api/logout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ token }),
+                cache: "no-store"
+            });
         }
     } catch (error) {
         console.error("Error al cerrar sesión:", error);
     } finally {
         localStorage.removeItem("token");
         localStorage.removeItem("user_id");
-        window.location.replace("index");
+        window.location.replace("/index");
     }
 }
 
-window.addEventListener("pageshow", function () {
-    if (!localStorage.getItem("token")) {
-        window.location.replace("index");
-    }
-});
+// esta es la funcion que funciona
 
+// async function logout() {
+//     const token = localStorage.getItem("token");
+
+//     try {
+//         if (token) {
+//             await fetch(
+//                 "https://www.creantunegocio.com/api/logout",
+//                 {
+//                     method: "POST",
+//                     headers: {
+//                         "Content-Type": "application/json"
+//                     },
+//                     body: JSON.stringify({ token })
+//                 }
+//             );
+//         }
+//     } catch (error) {
+//         console.error("Error al cerrar sesión:", error);
+//     } finally {
+//         localStorage.removeItem("token");
+//         localStorage.removeItem("user_id");
+//         window.location.replace("index");
+//     }
+// }
+
+// window.addEventListener("pageshow", function () {
+//     if (!localStorage.getItem("token")) {
+//         window.location.replace("index");
+//     }
+// });
+
+// esta es la funcion que funciona final
       
 
         // window.addEventListener("pageshow", function () {
