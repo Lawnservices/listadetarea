@@ -8,6 +8,16 @@
 <title>Calendario Mensual | ListaDeTareas</title>
 
 <style>
+    html.session-checking body {
+        visibility: hidden;
+    }
+</style>
+
+<script>
+    document.documentElement.classList.add("session-checking");
+</script>
+
+<style>
 :root {
     --verde: #087f5b;
     --azul: #173b68;
@@ -658,7 +668,7 @@ function dibujarRecordatorios() {
 
 /* No se carga ningún calendario antiguo desde localStorage.
    La fuente de verdad es MySQL para la cuenta autenticada. */
-   
+
 // if (!obtenerToken()) {
 //     window.location.replace("login.html");
 // } else {
@@ -697,7 +707,8 @@ async function comprobarSesionCalendario() {
             window.location.replace("/index");
             return;
         }
-
+        // la sesion es valida: para mostrar datos
+        document.documentElement.classList.remove("session-checking");
         // La sesión sigue siendo válida.
         await cargarEventosAPI();
 
@@ -708,6 +719,7 @@ async function comprobarSesionCalendario() {
     }
 }
 
+ 
 window.addEventListener("pageshow", comprobarSesionCalendario);
 
 </script>
