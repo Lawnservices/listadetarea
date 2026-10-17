@@ -64,3 +64,6 @@ async function logout() {
   localStorage.removeItem("token");
   window.location.replace("login.html");
 }
+
+  //  usuario nombres
+ document.getElementById("username").textContent = data.username;
