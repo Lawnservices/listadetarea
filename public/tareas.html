@@ -137,6 +137,7 @@ async function logout() {
     } finally {
         localStorage.removeItem("token");
         localStorage.removeItem("user_id");
+        localStorage.removeItem("username");
         window.location.replace("/index");
     }
 }
@@ -303,7 +304,10 @@ async function logout() {
 
         });
 
-     document.getElementById("username").textContent = data.username;
+    const username = localStorage.getItem("username");
+
+    document.getElementById("username").textContent =
+    username || "Usuario";
     </script>
 
     </body>

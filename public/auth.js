@@ -43,6 +43,7 @@ async function login() {
   }
 
   localStorage.setItem("token", data.token);
+  localStorage.setItem("username", data.username); // NUEVO
   window.location.href = "tareas";
 }
 
