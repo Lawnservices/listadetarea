@@ -20,7 +20,9 @@ async function register() {
     return;
   }
 
-  alert("Registrado correctamente");
+  
+   alert("Registrado correctamente");
+  
   window.location.href = "login.html";
 }
 
