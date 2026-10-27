@@ -5,7 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta name="description" content="Contacta con ListaDeTareas.com para resolver dudas o comunicar problemas con el servicio.">
+  <meta name="description"
+        id="meta-description"
+        content="Contacta con ListaDeTareas.com para resolver dudas o comunicar problemas con el servicio.">
+
+  <meta name="author" content="Miguel Laguna">
 
   <title>Contacto | ListaDeTareas.com</title>
 
@@ -34,11 +38,12 @@
     }
   </style>
 </head>
+
 <body>
 
-  <h1>Contacto</h1>
+  <h1 data-i18n="titulo">Contacto</h1>
 
-  <p>
+  <p data-i18n="intro">
     Gracias por visitar ListaDeTareas.com.
     Si tienes preguntas, necesitas ayuda o quieres comunicar
     un problema con la aplicación, puedes ponerte en contacto
@@ -46,28 +51,86 @@
   </p>
 
   <div class="contacto">
-    <h2>¿Cómo contactarnos?</h2>
+    <h2 data-i18n="subtitulo">¿Cómo contactarnos?</h2>
 
-    <p>
+    <p data-i18n="correoTexto">
       Escríbenos por correo electrónico:
     </p>
 
     <p>
       <strong>
         <a href="mailto:listadetareas88@gmail.com">
-         contacto@listadetareas.com
+          contacto@listadetareas.com
         </a>
       </strong>
     </p>
   </div>
 
-  <p>
+  <p data-i18n="respuesta">
     Intentaremos responder a tu consulta lo antes posible.
   </p>
 
   <p>
-    <a href="/">Volver a ListaDeTareas.com</a>
+    <a href="/" data-i18n="volver">
+      Volver a ListaDeTareas.com
+    </a>
   </p>
+
+  <script>
+    const traduccionesContacto = {
+      es: {
+        titulo: "Contacto",
+        intro: "Gracias por visitar ListaDeTareas.com. Si tienes preguntas, necesitas ayuda o quieres comunicar un problema con la aplicación, puedes ponerte en contacto con nosotros.",
+        subtitulo: "¿Cómo contactarnos?",
+        correoTexto: "Escríbenos por correo electrónico:",
+        respuesta: "Intentaremos responder a tu consulta lo antes posible.",
+        volver: "Volver a ListaDeTareas.com",
+        descripcion: "Contacta con ListaDeTareas.com para resolver dudas o comunicar problemas con el servicio.",
+        tituloPagina: "Contacto | ListaDeTareas.com"
+      },
+
+      en: {
+        titulo: "Contact Us",
+        intro: "Thank you for visiting ListaDeTareas.com. If you have questions, need help, or want to report a problem with the application, you can contact us.",
+        subtitulo: "How to contact us",
+        correoTexto: "Email us:",
+        respuesta: "We will try to respond to your inquiry as soon as possible.",
+        volver: "Back to ListaDeTareas.com",
+        descripcion: "Contact ListaDeTareas.com with questions or to report problems with the service.",
+        tituloPagina: "Contact Us | ListaDeTareas.com"
+      }
+    };
+
+    function aplicarIdiomaContacto() {
+      let idioma = "es";
+
+      try {
+        idioma = localStorage.getItem("idioma") === "en" ? "en" : "es";
+      } catch (error) {
+        idioma = "es";
+      }
+
+      const textos = traduccionesContacto[idioma];
+
+      document.documentElement.lang = idioma;
+      document.title = textos.tituloPagina;
+
+      const meta = document.getElementById("meta-description");
+      if (meta) {
+        meta.content = textos.descripcion;
+      }
+
+      document.querySelectorAll("[data-i18n]").forEach(elemento => {
+        const clave = elemento.dataset.i18n;
+
+        if (textos[clave] !== undefined) {
+          elemento.textContent = textos[clave];
+        }
+      });
+    }
+
+    aplicarIdiomaContacto();
+  </script>
 
 </body>
 </html>

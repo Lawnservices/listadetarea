@@ -1,31 +1,86 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>Página no encontrada</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta
+        name="description"
+        id="meta-description"
+        content="Lo sentimos, la página que buscas no existe o fue movida."
+    >
 
-        <link rel="stylesheet" href="404.css">
-    </head>
+    <title>Página no encontrada | ListaDeTareas.com</title>
 
-    <body>
+    <link rel="stylesheet" href="404.css">
+</head>
 
-        <div class="error-container">
+<body>
 
-            <h1>404</h1>
+    <div class="error-container">
 
-            <h2>¡Página no encontrada!</h2>
+        <h1>404</h1>
 
-            <p>
-                Lo sentimos, la página que buscas no existe o fue movida.
-            </p>
+        <h2 data-i18n="titulo">¡Página no encontrada!</h2>
 
-            <a href="index.html">
-                Volver al inicio
-            </a>
+        <p data-i18n="mensaje">
+            Lo sentimos, la página que buscas no existe o fue movida.
+        </p>
 
-        </div>
+        <a href="/" data-i18n="volver">
+            Volver al inicio
+        </a>
 
-    </body>
+    </div>
+
+    <script>
+        const traducciones404 = {
+            es: {
+                titulo: "¡Página no encontrada!",
+                mensaje: "Lo sentimos, la página que buscas no existe o fue movida.",
+                volver: "Volver al inicio",
+                tituloPagina: "Página no encontrada | ListaDeTareas.com",
+                descripcion: "Lo sentimos, la página que buscas no existe o fue movida."
+            },
+
+            en: {
+                titulo: "Page not found!",
+                mensaje: "Sorry, the page you are looking for does not exist or has been moved.",
+                volver: "Back to home",
+                tituloPagina: "Page Not Found | ListaDeTareas.com",
+                descripcion: "Sorry, the page you are looking for does not exist or has been moved."
+            }
+        };
+
+        function aplicarIdioma404() {
+            let idioma = "es";
+
+            try {
+                idioma = localStorage.getItem("idioma") === "en" ? "en" : "es";
+            } catch (error) {
+                idioma = "es";
+            }
+
+            const textos = traducciones404[idioma];
+
+            document.documentElement.lang = idioma;
+            document.title = textos.tituloPagina;
+
+            document.querySelectorAll("[data-i18n]").forEach(elemento => {
+                const clave = elemento.dataset.i18n;
+
+                if (textos[clave] !== undefined) {
+                    elemento.textContent = textos[clave];
+                }
+            });
+
+            document.getElementById("meta-description").content =
+                textos.descripcion;
+        }
+
+        aplicarIdioma404();
+    </script>
+
+</body>
 </html>

@@ -1,319 +1,254 @@
+
 <!DOCTYPE html>
 <html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <head>
+    <meta
+        name="description"
+        id="meta-description"
+        content="Aplicación para guardar y organizar tus tareas y notas gratis"
+    >
+    <meta name="author" content="Miguel Laguna">
 
-        <meta charset="UTF-8">
+    <link rel="shortcut icon" href="img/icon.png" type="image/x-icon">
 
-        <meta name="viewport"
-            content="width=device-width, initial-scale=1.0">
+    <title>Tareas ListaDeTareas | Organiza tu día y tus pendientes gratis</title>
 
-        <meta name="description"
-            content="Aplicación para guardar y organizar tus tareas y notas gratis">
+    <link rel="stylesheet" href="tareas.css">
 
-        <meta name="author"
-            content="Miguel Laguna">
-        <link rel="shortcut icon" href="img/icon.png" type="image/x-icon">
-        <title>
-            Tareas ListaDeTareas | Organiza tu día y tus pendientes gratis
-        </title>
+    <style>
+        .btn-calendario {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 0;
+            transition: background 0.3s;
+        }
 
-        <link rel="stylesheet" href="tareas.css">
-        <style>
-.btn-calendario {
-    display: inline-block;
-    background: #2563eb;
-    color: white;
-    padding: 12px 22px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
-    margin: 10px 0;
-    transition: background 0.3s;
-}
+        .btn-calendario:hover {
+            background: #1d4ed8;
+        }
 
-.btn-calendario:hover {
-    background: #1d4ed8;
-}
-#bienvenido{
-font-size: 18px;
-color: aliceblue;
-}
-</style>
-    </head>
+        #bienvenido {
+            font-size: 18px;
+            color: aliceblue;
+        }
+    </style>
+</head>
 
-    
-    <body>
+<body>
 
-        <h1>Mis tareas</h1>
-        <p id="bienvenido">Bienvenido, <span id="username"></span></p>
-        <a href="/calendario" class="btn-calendario">
+    <h1 data-i18n="titulo">Mis tareas</h1>
+
+    <p id="bienvenido">
+        <span data-i18n="bienvenido">Bienvenido,</span>
+        <span id="username"></span>
+    </p>
+
+    <a href="/calendario" class="btn-calendario" data-i18n="calendario">
         Calendario mensual
-        </a>
+    </a>
 
+    <button type="button" onclick="logout()" id="salir" data-i18n="cerrarSesion">
+        Cerrar sesión
+    </button>
+
+    <form id="deleteForm" onsubmit="return false;">
         <button
             type="button"
-            onclick="logout()"
-            id="salir">
-
-            Cerrar sesión
-
+            id="deleteAccount"
+            class="salir"
+            data-i18n="borrarCuenta"
+        >
+            Borrar cuenta
         </button>
+    </form>
 
-         
+    <hr>
 
-        <form
-            id="deleteForm"
-            onsubmit="return false;">
+    <input
+        type="text"
+        id="taskInput"
+        autofocus
+        placeholder="Escribe una tarea..."
+        data-i18n-placeholder="placeholderTarea"
+    >
 
-            <button
-                type="button"
-                id="deleteAccount"
-                class="salir">
+    <button type="button" onclick="addTask()" data-i18n="agregarTarea">
+        Agregar tarea
+    </button>
 
-                Borrar cuenta
+    <ul id="taskList"></ul>
 
-            </button>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
 
-        </form>
+    <script>
+        const traduccionesTareas = {
+            es: {
+                titulo: "Mis tareas",
+                bienvenido: "Bienvenido,",
+                calendario: "Calendario mensual",
+                cerrarSesion: "Cerrar sesión",
+                borrarCuenta: "Borrar cuenta",
+                placeholderTarea: "Escribe una tarea...",
+                agregarTarea: "Agregar tarea",
+                usuario: "Usuario",
+                confirmarBorrar: "¿Seguro que quieres borrar tu cuenta?",
+                sinSesion: "No hay sesión activa",
+                cuentaEliminada: "Tu cuenta fue eliminada",
+                errorBorrar: "No se pudo borrar la cuenta",
+                errorServidor: "Error del servidor",
+                tituloPagina: "Mis tareas | ListaDeTareas.com",
+                descripcion: "Organiza tus tareas y notas gratis con ListaDeTareas.com."
+            },
 
-        <hr>
+            en: {
+                titulo: "My Tasks",
+                bienvenido: "Welcome,",
+                calendario: "Monthly Calendar",
+                cerrarSesion: "Log out",
+                borrarCuenta: "Delete account",
+                placeholderTarea: "Write a task...",
+                agregarTarea: "Add task",
+                usuario: "User",
+                confirmarBorrar: "Are you sure you want to delete your account?",
+                sinSesion: "There is no active session",
+                cuentaEliminada: "Your account has been deleted",
+                errorBorrar: "Could not delete the account",
+                errorServidor: "Server error",
+                tituloPagina: "My Tasks | ListaDeTareas.com",
+                descripcion: "Organize your tasks and notes for free with ListaDeTareas.com."
+            }
+        };
 
-       
+        function obtenerIdiomaTareas() {
+            try {
+                return localStorage.getItem("idioma") === "en" ? "en" : "es";
+            } catch (error) {
+                return "es";
+            }
+        }
 
-        <input
-            type="text"
-            id="taskInput"
-            autofocus
-            placeholder="Escribe una tarea...">
+        function textoTareas(clave) {
+            const idioma = obtenerIdiomaTareas();
+            return traduccionesTareas[idioma][clave] ||
+                   traduccionesTareas.es[clave] ||
+                   clave;
+        }
 
-        <button
-            type="button"
-            onclick="addTask()">
+        function aplicarIdiomaTareas() {
+            const idioma = obtenerIdiomaTareas();
+            const textos = traduccionesTareas[idioma];
 
-            Agregar tarea
+            document.documentElement.lang = idioma;
+            document.title = textos.tituloPagina;
 
-        </button>
+            const meta = document.getElementById("meta-description");
+            if (meta) {
+                meta.content = textos.descripcion;
+            }
 
-        
+            document.querySelectorAll("[data-i18n]").forEach(elemento => {
+                const clave = elemento.dataset.i18n;
 
-        <ul id="taskList"></ul>
+                if (textos[clave] !== undefined) {
+                    elemento.textContent = textos[clave];
+                }
+            });
 
-    
+            document.querySelectorAll("[data-i18n-placeholder]").forEach(elemento => {
+                const clave = elemento.dataset.i18nPlaceholder;
 
-        <script src="auth.js"></script>
-        <script src="app.js"></script>
+                if (textos[clave] !== undefined) {
+                    elemento.placeholder = textos[clave];
+                }
+            });
+        }
 
-        <script>
+        // Cerrar sesión: conserva el funcionamiento de tu API.
+        async function logout() {
+            const token = localStorage.getItem("token");
 
-        
+            try {
+                if (token) {
+                    await fetch("https://www.creantunegocio.com/api/logout", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ token }),
+                        cache: "no-store"
+                    });
+                }
+            } catch (error) {
+                console.error("Error al cerrar sesión:", error);
+            } finally {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user_id");
+                localStorage.removeItem("username");
+                window.location.replace("/index");
+            }
+        }
 
-        // function logout() {
+        // Borrar cuenta.
+        document.getElementById("deleteAccount").addEventListener("click", function () {
+            const confirmar = confirm(textoTareas("confirmarBorrar"));
 
-            
-        //     localStorage.removeItem("token");
-        //     localStorage.removeItem("user_id");
+            if (!confirmar) {
+                return;
+            }
 
-          
-        //     window.location.replace("index");
+            const token = localStorage.getItem("token");
 
-        // }
+            if (!token) {
+                alert(textoTareas("sinSesion"));
+                window.location.replace("/index");
+                return;
+            }
 
-
-
-async function logout() {
-    const token = localStorage.getItem("token");
-
-    try {
-        if (token) {
-            await fetch("https://www.creantunegocio.com/api/logout", {
+            fetch("https://www.creantunegocio.com/borrar_cuenta", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ token }),
-                cache: "no-store"
-            });
-        }
-    } catch (error) {
-        console.error("Error al cerrar sesión:", error);
-    } finally {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user_id");
-        localStorage.removeItem("username");
-        window.location.replace("/index");
-    }
-}
-
-// esta es la funcion que funciona
-
-// async function logout() {
-//     const token = localStorage.getItem("token");
-
-//     try {
-//         if (token) {
-//             await fetch(
-//                 "https://www.creantunegocio.com/api/logout",
-//                 {
-//                     method: "POST",
-//                     headers: {
-//                         "Content-Type": "application/json"
-//                     },
-//                     body: JSON.stringify({ token })
-//                 }
-//             );
-//         }
-//     } catch (error) {
-//         console.error("Error al cerrar sesión:", error);
-//     } finally {
-//         localStorage.removeItem("token");
-//         localStorage.removeItem("user_id");
-//         window.location.replace("index");
-//     }
-// }
-
-// window.addEventListener("pageshow", function () {
-//     if (!localStorage.getItem("token")) {
-//         window.location.replace("index");
-//     }
-// });
-
-// esta es la funcion que funciona final
-      
-
-        // window.addEventListener("pageshow", function () {
-
-        //     const token = localStorage.getItem("token");
-
-        //     if (!token) {
-
-        //         window.location.replace("index");
-
-        //     }
-
-        // });
-
-
-       
-
-        const deleteBtn =
-            document.getElementById("deleteAccount");
-
-
-        deleteBtn.addEventListener("click", function () {
-
-            const confirmar = confirm(
-                "¿Seguro que quieres borrar tu cuenta?"
-            );
-
-
-            if (!confirmar) {
-
-                return;
-
-            }
-
-
-            const token =
-                localStorage.getItem("token");
-
-
-            if (!token) {
-
-                alert("No hay sesión activa");
-
-                window.location.replace("index");
-
-                return;
-
-            }
-
-
-            fetch(
-                "https://www.creantunegocio.com/borrar_cuenta",
-                {
-
-                    method: "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body: JSON.stringify({
-
-                        token: token
-
-                    })
-
-                }
-
-            )
-
-            .then(res => res.json())
-
-            .then(data => {
-
-                if (data.success) {
-
-                    alert(
-                        "Tu cuenta fue eliminada"
-                    );
-
-
-                    
-
-                    localStorage.removeItem(
-                        "token"
-                    );
-
-                    localStorage.removeItem(
-                        "user_id"
-                    );
-
-
-                    
-
-                    window.location.replace(
-                        "index"
-                    );
-
-
-                } else {
-
-                    alert(
-                        data.error ||
-                        "No se pudo borrar la cuenta"
-                    );
-
-                }
-
+                body: JSON.stringify({ token: token })
             })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert(textoTareas("cuentaEliminada"));
 
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user_id");
+                    localStorage.removeItem("username");
+
+                    window.location.replace("/index");
+                } else {
+                    alert(data.error || textoTareas("errorBorrar"));
+                }
+            })
             .catch(error => {
-
-                console.error(
-                    "Error:",
-                    error
-                );
-
-                alert(
-                    "Error del servidor"
-                );
-
+                console.error("Error:", error);
+                alert(textoTareas("errorServidor"));
             });
-
         });
 
-    const username = localStorage.getItem("username");
+        // Mostrar nombre de usuario.
+        const username = localStorage.getItem("username");
 
-    document.getElementById("username").textContent =
-    username || "Usuario";
+        document.getElementById("username").textContent =
+            username || textoTareas("usuario");
+
+        aplicarIdiomaTareas();
     </script>
 
-    </body>
-
+</body>
 </html>

@@ -2,19 +2,24 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-E1M5CN78FL"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E1M5CN78FL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-E1M5CN78FL');
+  </script>
 
-  gtag('config', 'G-E1M5CN78FL');
-</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="Miguel Laguna">
-  <meta name="description" content="Conoce ListaDeTareas.com, una herramienta para organizar tus tareas y pendientes diarios.">
+
+  <meta
+    name="description"
+    id="meta-description"
+    content="Conoce ListaDeTareas.com, una herramienta para organizar tus tareas y pendientes diarios."
+  >
 
   <title>Acerca de nosotros | ListaDeTareas.com</title>
 
@@ -37,40 +42,107 @@
     }
   </style>
 </head>
+
 <body>
 
-  <h1>Acerca de ListaDeTareas.com</h1>
+  <h1 data-i18n="titulo">Acerca de ListaDeTareas.com</h1>
 
-  <p>
+  <p data-i18n="intro">
     ListaDeTareas.com es una herramienta diseñada para ayudar
     a las personas a organizar sus actividades, administrar
     sus pendientes y planificar mejor su día.
   </p>
 
-  <h2>Nuestro objetivo</h2>
+  <h2 data-i18n="objetivo">Nuestro objetivo</h2>
 
-  <p>
+  <p data-i18n="objetivoTexto">
     Queremos facilitar la organización diaria mediante una
     herramienta sencilla que permita crear tareas y mantener
     las actividades importantes bajo control.
   </p>
 
-  <h2>Nuestras funciones</h2>
+  <h2 data-i18n="funciones">Nuestras funciones</h2>
 
   <ul>
-    <li>Crear y organizar tareas.</li>
-    <li>Administrar pendientes personales.</li>
-    <li>Consultar un calendario mensual.</li>
-    <li>Acceder desde distintos dispositivos.</li>
+    <li data-i18n="funcion1">Crear y organizar tareas.</li>
+    <li data-i18n="funcion2">Administrar pendientes personales.</li>
+    <li data-i18n="funcion3">Consultar un calendario mensual.</li>
+    <li data-i18n="funcion4">Acceder desde distintos dispositivos.</li>
   </ul>
 
-  <p>
+  <p data-i18n="gracias">
     Gracias por visitar ListaDeTareas.com.
   </p>
 
   <p>
-    <a href="/">Volver a la página principal</a>
+    <a href="/" data-i18n="volver">Volver a la página principal</a>
   </p>
+
+  <script>
+    const traduccionesAcerca = {
+      es: {
+        titulo: "Acerca de ListaDeTareas.com",
+        intro: "ListaDeTareas.com es una herramienta diseñada para ayudar a las personas a organizar sus actividades, administrar sus pendientes y planificar mejor su día.",
+        objetivo: "Nuestro objetivo",
+        objetivoTexto: "Queremos facilitar la organización diaria mediante una herramienta sencilla que permita crear tareas y mantener las actividades importantes bajo control.",
+        funciones: "Nuestras funciones",
+        funcion1: "Crear y organizar tareas.",
+        funcion2: "Administrar pendientes personales.",
+        funcion3: "Consultar un calendario mensual.",
+        funcion4: "Acceder desde distintos dispositivos.",
+        gracias: "Gracias por visitar ListaDeTareas.com.",
+        volver: "Volver a la página principal",
+        descripcion: "Conoce ListaDeTareas.com, una herramienta para organizar tus tareas y pendientes diarios.",
+        tituloPagina: "Acerca de nosotros | ListaDeTareas.com"
+      },
+
+      en: {
+        titulo: "About ListaDeTareas.com",
+        intro: "ListaDeTareas.com is a tool designed to help people organize their activities, manage their to-dos, and plan their day more effectively.",
+        objetivo: "Our goal",
+        objetivoTexto: "We want to make daily planning easier with a simple tool that lets you create tasks and keep important activities under control.",
+        funciones: "Our features",
+        funcion1: "Create and organize tasks.",
+        funcion2: "Manage personal to-dos.",
+        funcion3: "View a monthly calendar.",
+        funcion4: "Access your tasks from different devices.",
+        gracias: "Thank you for visiting ListaDeTareas.com.",
+        volver: "Back to the home page",
+        descripcion: "Discover ListaDeTareas.com, a tool for organizing your daily tasks and to-dos.",
+        tituloPagina: "About Us | ListaDeTareas.com"
+      }
+    };
+
+    function aplicarIdiomaAcerca() {
+      let idioma = "es";
+
+      try {
+        idioma = localStorage.getItem("idioma") === "en" ? "en" : "es";
+      } catch (error) {
+        idioma = "es";
+      }
+
+      const textos = traduccionesAcerca[idioma];
+
+      document.documentElement.lang = idioma;
+      document.title = textos.tituloPagina;
+
+      const meta = document.getElementById("meta-description");
+      if (meta) {
+        meta.content = textos.descripcion;
+      }
+
+      document.querySelectorAll("[data-i18n]").forEach(elemento => {
+        const clave = elemento.dataset.i18n;
+
+        if (textos[clave] !== undefined) {
+          elemento.textContent = textos[clave];
+        }
+      });
+    }
+
+    aplicarIdiomaAcerca();
+  </script>
 
 </body>
 </html>
