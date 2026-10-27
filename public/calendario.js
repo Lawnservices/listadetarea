@@ -1,5 +1,4 @@
 
- 
 (function () {
     "use strict";
 
@@ -34,7 +33,6 @@
         "Todavía no hay eventos este mes.": "There are no events this month yet.",
         "Escribe el nombre del evento.": "Enter the event name.",
         "¿Seguro que quieres eliminar este evento?": "Are you sure you want to delete this event?",
-        "Guardando en {..}...": "Saving...",
         "Eliminando evento...": "Deleting event...",
         "No se encontró ese evento. Actualiza el calendario.": "Event not found. Refresh the calendar.",
         "No se pudo conectar con el servidor. Comprueba tu conexión y la configuración CORS de la API.": "Could not connect to the server. Check your connection and the API's CORS settings.",
@@ -42,9 +40,6 @@
         "Debes iniciar sesión.": "You must log in.",
         "Tu sesión ha expirado. Inicia sesión de nuevo.": "Your session has expired. Please log in again.",
         "No se pudo verificar la sesión. Recarga la página.": "Could not verify your session. Reload the page.",
-        "Eventos cargados correctamente desde {..}...": "Events loaded successfully.",
-        "Evento guardado correctamente en {..}.": "Event saved successfully.",
-        "Evento eliminado correctamente de {..}...": "Event deleted successfully.",
         "No se pudo iniciar el calendario:": "Could not start the calendar:",
         "← Mis tareas": "← My tasks",
         "Inicio": "Home",
@@ -70,76 +65,110 @@
         "© 2026 ListaDeTareas · Organiza tu tiempo.": "© 2026 ListaDeTareas · Organize your time."
     };
 
-    const idioma = (() => {
-        try {
-            return localStorage.getItem("idioma") === "en" ? "en" : "es";
-        } catch {
-            return "es";
-        }
-    })();
+    let idioma = "es";
+
+    try {
+        idioma = localStorage.getItem("idioma") === "en" ? "en" : "es";
+    } catch (error) {
+        idioma = "es";
+    }
 
     document.documentElement.lang = idioma;
+    document.title = idioma === "en"
+        ? "Monthly Calendar | ListaDeTareas"
+        : "Calendario Mensual | ListaDeTareas";
 
-    if (idioma === "en") {
-        document.title = "Monthly Calendar | ListaDeTareas";
+    if (idioma !== "en") {
+        return;
+    }
 
-        const originalMesAnio = document.getElementById("mesAnio");
+    function traducirTexto(texto) {
+        const limpio = texto.replace(/\s+/g, " ").trim();
 
-        function traducirTexto(texto) {
-            const limpio = texto.replace(/\s+/g, " ").trim();
-            return textos[limpio] || texto;
+        if (textos[limpio]) {
+            // Conserva los espacios originales alrededor del texto.
+            const inicio = texto.match(/^\s*/)?.[0] || "";
+            const final = texto.match(/\s*$/)?.[0] || "";
+            return inicio + textos[limpio] + final;
         }
 
-        function traducirPagina() {
-            const elementos = document.querySelectorAll(
-                "h1, h2, p, a, button, label, option, span, footer, .estadistica"
-            );
+        return texto;
+    }
 
-            elementos.forEach(elemento => {
-                // Traducir solamente el texto propio del elemento.
-                elemento.childNodes.forEach(nodo => {
-                    if (nodo.nodeType === Node.TEXT_NODE) {
-                        nodo.textContent = traducirTexto(nodo.textContent);
+    function traducirPagina() {
+        const elementos = document.querySelectorAll(
+            "h1, h2, h3, p, a, button, label, option, span, footer, .estadistica"
+        );
+
+        elementos.forEach(elemento => {
+            elemento.childNodes.forEach(nodo => {
+                if (nodo.nodeType === Node.TEXT_NODE) {
+                    const nuevoTexto = traducirTexto(nodo.textContent);
+
+                    if (nuevoTexto !== nodo.textContent) {
+                        nodo.textContent = nuevoTexto;
                     }
-                });
-
-                if (elemento.hasAttribute("placeholder")) {
-                    elemento.placeholder = traducirTexto(elemento.placeholder);
-                }
-
-                if (elemento.hasAttribute("aria-label")) {
-                    elemento.setAttribute(
-                        "aria-label",
-                        traducirTexto(elemento.getAttribute("aria-label"))
-                    );
                 }
             });
 
-            // Traducir el nombre del mes, sin modificar el año.
-            if (originalMesAnio) {
-                originalMesAnio.textContent =
-                    traducirTexto(originalMesAnio.textContent);
+            if (elemento.hasAttribute("placeholder")) {
+                const original = elemento.getAttribute("placeholder");
+                const nuevo = traducirTexto(original);
+
+                if (nuevo !== original) {
+                    elemento.setAttribute("placeholder", nuevo);
+                }
+            }
+
+            if (elemento.hasAttribute("aria-label")) {
+                const original = elemento.getAttribute("aria-label");
+                const nuevo = traducirTexto(original);
+
+                if (nuevo !== original) {
+                    elemento.setAttribute("aria-label", nuevo);
+                }
+            }
+        });
+
+        // Traduce el mes y conserva el año.
+        const mesAnio = document.getElementById("mesAnio");
+
+        if (mesAnio) {
+            const contenido = mesAnio.textContent.trim();
+            const partes = contenido.match(/^([^\d]+?)(\s+\d{4})?$/);
+
+            if (partes) {
+                const mesTraducido = traducirTexto(partes[1]);
+
+                if (mesTraducido !== partes[1]) {
+                    mesAnio.textContent =
+                        mesTraducido + (partes[2] || "");
+                }
             }
         }
-
-        traducirPagina();
-
-        // Traduce también los textos que el calendario genere después.
-        const observador = new MutationObserver(() => {
-            traducirPagina();
-        });
-
-        observador.observe(document.body, {
-            childList: true,
-            subtree: true,
-            characterData: true
-        });
-
-        // Usar fechas en inglés para los recordatorios y el modal.
-        const fechaBonitaOriginal = window.fechaBonita;
-
-    } else {
-        document.title = "Calendario Mensual | ListaDeTareas";
     }
+
+    // Traduce el contenido que ya existe.
+    traducirPagina();
+
+    // Traduce cambios futuros sin observar sus propias traducciones.
+    const observador = new MutationObserver(() => {
+        observador.disconnect();
+
+        try {
+            traducirPagina();
+        } finally {
+            observador.observe(document.body, {
+                childList: true,
+                subtree: true,
+                characterData: true
+            });
+        }
+    });
+
+    observador.observe(document.body, {
+        childList: true,
+        subtree: true,
+        characterData: true
+    });
 })();
- 
