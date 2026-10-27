@@ -1,187 +1,277 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-E1M5CN78FL"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E1M5CN78FL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-E1M5CN78FL');
+  </script>
 
-  gtag('config', 'G-E1M5CN78FL');
-</script>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <meta name="google-site-verification" content="cuvv7bcfpiP5p2HrzH7zMjR-K4-Gqmz303d9SNSyNTI" />
-     <meta property="og:title" content="listadetareas.com">
- 
-<meta property="og:image" content="https://listadetareas.com/img/tarea.jpg">
-<meta property="og:url" content="https://listadetareas.com">
-<meta property="og:type" content="website">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ListaDeTareas.com">
-<meta name="twitter:description" content="Organiza tu día, alcanza tus metas.">
-<meta name="twitter:image" content="https://listadetareas.com/img/tarea.jpg">
+  <meta name="google-site-verification"
+        content="cuvv7bcfpiP5p2HrzH7zMjR-K4-Gqmz303d9SNSyNTI">
 
-<meta name="author" content="Miguel Laguna">
-<meta name="description" content="Organiza tu día con ListaDeTareas. Crea listas de tareas, checklists y pendientes gratis desde cualquier dispositivo y mejora tu productividad., aplicacion, guarda tus tareas, guardar notas, notas">
+  <meta property="og:title" content="ListaDeTareas.com">
+  <meta property="og:image" content="https://listadetareas.com/img/tarea.jpg">
+  <meta property="og:url" content="https://listadetareas.com">
+  <meta property="og:type" content="website">
 
-<meta property="og:description" content="Organiza tu día con ListaDeTareas. Crea listas de tareas y administra tus pendientes de forma rápida, gratuita y desde cualquier dispositivo.">
-<meta name="keywords" content="lista de tareas, lista de pendientes, checklist, productividad, organizar tareas, tareas online, to do list, agenda, recordatorios, notas, ListaDeTareas">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ListaDeTareas.com">
+  <meta name="twitter:description"
+        content="Organiza tu día con ListaDeTareas.">
+  <meta name="twitter:image" content="https://listadetareas.com/img/tarea.jpg">
 
-     <link rel="shortcut icon" href="img/icon.png" type="image/x-icon">
-     <link rel="manifest" href="manifest.json">
-     <link rel="stylesheet" href="home.css">
-     <title>ListaDeTareas | Organiza tu día y tus pendientes gratis</title>
-     
+  <meta name="author" content="Miguel Laguna">
+  <meta name="description" content="Organiza tu día con ListaDeTareas. Crea listas de tareas, checklists y pendientes gratis desde cualquier dispositivo.">
+  <meta property="og:description"
+        content="Organiza tus tareas y administra tus pendientes de forma rápida y gratuita.">
+  <meta name="keywords"
+        content="lista de tareas, checklist, productividad, organizar tareas, to do list, agenda">
+
+  <link rel="shortcut icon" href="/img/icon.png" type="image/x-icon">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="/home.css">
+
+  <title>ListaDeTareas | Organiza tu día gratis</title>
+
+  <style>
+    .selector-idioma {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin: 10px;
+    }
+
+    .selector-idioma button {
+      padding: 8px 12px;
+      border: 1px solid #2563eb;
+      border-radius: 20px;
+      background: white;
+      color: #2563eb;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .selector-idioma button.activo {
+      background: #2563eb;
+      color: white;
+    }
+
+    .selector-idioma button:focus-visible {
+      outline: 3px solid #93c5fd;
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 600px) {
+      .selector-idioma {
+        flex-wrap: wrap;
+      }
+
+      .selector-idioma button {
+        padding: 7px 9px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<button id="installBtn" style="display:none;">
-  Instalar App 📲
-</button>
-<nav> 
-<div class="logo">
-  ListaDeTareas.com
-</div>    
 
-<div>
-<a href="/login">Entrar</a>
-<a href="/register">Crear cuenta</a>
-</div>
-</nav>
- 
-<section class="hero">
-  <div class="contenido">
-    <h1>
-Organiza tu día con 
-<span>ListaDeTareas</span>
-</h1>
+  <button id="installBtn" style="display:none;">
+    Instalar App 📲
+  </button>
 
-<p class="descripcion">
-Crea, organiza y completa tus tareas fácilmente.
-Una aplicación rápida para tener todo bajo control.
-</p>
+  <nav>
+    <div class="logo">ListaDeTareas.com</div>
 
+    <!-- Selector de idioma: solo aparece en esta página -->
+    <div class="selector-idioma" aria-label="Seleccionar idioma">
+      <button type="button" data-idioma="es"
+              aria-pressed="true">🇪🇸 Español</button>
+      <button type="button" data-idioma="en"
+              aria-pressed="false">🇺🇸 English</button>
+    </div>
 
-<div class="lista">
-  <p>✅ Crea tus tareas</p>
-  <p>✅ Organiza tu día</p>
-  <p>✅ Guarda tus pendientes</p>
-  <p>✅ Funciona en celular</p>
-  <p>✅ Instálala como aplicación</p>
-</div>
-
-
-<div class="botones">
-  <a class="registro" href="/register">
-Comenzar gratis
-</a>
-<a class="login" href="/login">
-Iniciar sesión
-</a>
-</div>
-  </div>
- 
-
- <div class="app">
-<h2>
-Mis tareas
-</h2>
-
-<div class="tarea">
-☑ Calendario mensual
-</div>
-<div class="tarea">
-☑ Cita médica
-</div>
-<div class="tarea">
-☐ Comprar materiales
-</div>
-<div class="tarea">
-☐ Organizar mi día
-</div>
-<div class="tarea">
-☑ Terminar proyecto
-</div>
-<div class="tarea">
-☑ Días de trabajo
-</div> 
-</section>
- 
- 
-    
-    
- 
-
-
- 
-
-<footer class="footer">
-  <p class="footer-titulo">
-    ListaDeTareas.com
-  </p>
-
-  <p>
-    Organiza tus tareas, administra tus pendientes
-    y planifica mejor tu día.
-  </p>
-
-  <nav class="footer-enlaces" aria-label="Información del sitio">
-    <a href="/acerca-de">Acerca de</a>
-    <a href="/privacidad">Política de privacidad</a>
-    <a href="/contacto">Contacto</a>
-    <a href="/organizar-tareas">Cómo organizar tus tareas diarias</a>
+    <div>
+      <a href="/login" data-i18n="entrar">Entrar</a>
+      <a href="/register" data-i18n="crearCuenta">Crear cuenta</a>
+    </div>
   </nav>
 
-  <p class="footer-copy">
-    © 2026 ListaDeTareas.com. Todos los derechos reservados.
-  </p>
-</footer>
+  <section class="hero">
+    <div class="contenido">
 
-<style>
-.footer {
-  margin-top: 50px;
-  padding: 30px 20px;
-  background: #111827;
-  color: #ffffff;
-  text-align: center;
-  font-family: Arial, sans-serif;
-}
+      <h1>
+        <span data-i18n="titulo">Organiza tu día con</span>
+        <span>ListaDeTareas</span>
+      </h1>
 
-.footer-titulo {
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
+      <p class="descripcion" data-i18n="descripcion">
+        Crea, organiza y completa tus tareas fácilmente.
+        Una aplicación rápida para tener todo bajo control.
+      </p>
 
-.footer-enlaces {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin: 22px 0;
-  background-color: #111827;
-}
+      <div class="lista">
+        <p data-i18n="beneficio1">✅ Crea tus tareas</p>
+        <p data-i18n="beneficio2">✅ Organiza tu día</p>
+        <p data-i18n="beneficio3">✅ Guarda tus pendientes</p>
+        <p data-i18n="beneficio4">✅ Funciona en celular</p>
+        <p data-i18n="beneficio5">✅ Instálala como aplicación</p>
+      </div>
 
-.footer-enlaces a {
-  color: #4b95e4;
-  text-decoration: none;
-}
+      <div class="botones">
+        <a class="registro" href="/register" data-i18n="comenzar">
+          Comenzar gratis
+        </a>
 
-.footer-enlaces a:hover {
-  color: #124ba1;
-  text-decoration: underline;
-}
+        <a class="login" href="/login" data-i18n="iniciarSesion">
+          Iniciar sesión
+        </a>
+      </div>
 
-.footer-copy {
-  font-size: 13px;
-  color: #d1d5db;
-  margin-top: 20px;
-}
-</style>
+    </div>
 
-    <script src="auth.js"></script>
+    <div class="app">
+      <h2 data-i18n="misTareas">Mis tareas</h2>
+
+      <div class="tarea" data-i18n="tarea1">☑ Calendario mensual</div>
+      <div class="tarea" data-i18n="tarea2">☑ Cita médica</div>
+      <div class="tarea" data-i18n="tarea3">☐ Comprar materiales</div>
+      <div class="tarea" data-i18n="tarea4">☐ Organizar mi día</div>
+      <div class="tarea" data-i18n="tarea5">☑ Terminar proyecto</div>
+      <div class="tarea" data-i18n="tarea6">☑ Días de trabajo</div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p class="footer-titulo">ListaDeTareas.com</p>
+
+    <p data-i18n="pieDescripcion">
+      Organiza tus tareas, administra tus pendientes
+      y planifica mejor tu día.
+    </p>
+
+    <nav class="footer-enlaces" aria-label="Información del sitio">
+      <a href="/acerca-de" data-i18n="acerca">Acerca de</a>
+      <a href="/privacidad" data-i18n="privacidad">Política de privacidad</a>
+      <a href="/contacto" data-i18n="contacto">Contacto</a>
+      <a href="/organizar-tareas" data-i18n="organizar">
+        Cómo organizar tus tareas diarias
+      </a>
+    </nav>
+
+    <p class="footer-copy" data-i18n="derechos">
+      © 2026 ListaDeTareas.com. Todos los derechos reservados.
+    </p>
+  </footer>
+
+  <script>
+    const traducciones = {
+      es: {
+        entrar: "Entrar",
+        crearCuenta: "Crear cuenta",
+        titulo: "Organiza tu día con",
+        descripcion: "Crea, organiza y completa tus tareas fácilmente. Una aplicación rápida para tener todo bajo control.",
+        beneficio1: "✅ Crea tus tareas",
+        beneficio2: "✅ Organiza tu día",
+        beneficio3: "✅ Guarda tus pendientes",
+        beneficio4: "✅ Funciona en celular",
+        beneficio5: "✅ Instálala como aplicación",
+        comenzar: "Comenzar gratis",
+        iniciarSesion: "Iniciar sesión",
+        misTareas: "Mis tareas",
+        tarea1: "☑ Calendario mensual",
+        tarea2: "☑ Cita médica",
+        tarea3: "☐ Comprar materiales",
+        tarea4: "☐ Organizar mi día",
+        tarea5: "☑ Terminar proyecto",
+        tarea6: "☑ Días de trabajo",
+        pieDescripcion: "Organiza tus tareas, administra tus pendientes y planifica mejor tu día.",
+        acerca: "Acerca de",
+        privacidad: "Política de privacidad",
+        contacto: "Contacto",
+        organizar: "Cómo organizar tus tareas diarias",
+        derechos: "© 2026 ListaDeTareas.com. Todos los derechos reservados."
+      },
+
+      en: {
+        entrar: "Log in",
+        crearCuenta: "Sign up",
+        titulo: "Organize your day with",
+        descripcion: "Create, organize, and complete your tasks easily. A simple app to keep everything under control.",
+        beneficio1: "✅ Create your tasks",
+        beneficio2: "✅ Organize your day",
+        beneficio3: "✅ Save your to-dos",
+        beneficio4: "✅ Works on mobile",
+        beneficio5: "✅ Install it as an app",
+        comenzar: "Get started for free",
+        iniciarSesion: "Log in",
+        misTareas: "My tasks",
+        tarea1: "☑ Monthly calendar",
+        tarea2: "☑ Medical appointment",
+        tarea3: "☐ Buy supplies",
+        tarea4: "☐ Organize my day",
+        tarea5: "☑ Finish project",
+        tarea6: "☑ Workdays",
+        pieDescripcion: "Organize your tasks, manage your to-dos, and plan your day better.",
+        acerca: "About us",
+        privacidad: "Privacy policy",
+        contacto: "Contact",
+        organizar: "How to organize your daily tasks",
+        derechos: "© 2026 ListaDeTareas.com. All rights reserved."
+      }
+    };
+
+    function cambiarIdioma(idioma) {
+      if (!traducciones[idioma]) {
+        idioma = "es";
+      }
+
+      localStorage.setItem("idioma", idioma);
+      document.documentElement.lang = idioma;
+
+      document.querySelectorAll("[data-i18n]").forEach(elemento => {
+        const clave = elemento.dataset.i18n;
+        const texto = traducciones[idioma][clave];
+
+        if (texto !== undefined) {
+          elemento.textContent = texto;
+        }
+      });
+
+      document.querySelectorAll("[data-idioma]").forEach(boton => {
+        const seleccionado = boton.dataset.idioma === idioma;
+
+        boton.classList.toggle("activo", seleccionado);
+        boton.setAttribute("aria-pressed", String(seleccionado));
+      });
+    }
+
+    document.querySelectorAll("[data-idioma]").forEach(boton => {
+      boton.addEventListener("click", () => {
+        cambiarIdioma(boton.dataset.idioma);
+      });
+    });
+
+    let idiomaGuardado = "es";
+
+    try {
+      idiomaGuardado = localStorage.getItem("idioma") || "es";
+    } catch (error) {
+      // Si el navegador bloquea localStorage, se usa español.
+    }
+
+    cambiarIdioma(idiomaGuardado);
+  </script>
+
+  <script src="/auth.js"></script>
 
 </body>
 </html>
