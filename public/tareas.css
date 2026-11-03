@@ -151,6 +151,10 @@ button[onclick="addTask()"]:hover {
     color: #1e293b;
     background: #ffffff;
 }
+.edit-task-input:hover{
+background-color: #04366e;
+color: white;
+}
 .edit-task-input:focus {
     border-color: #3b82f6;
     box-shadow:
