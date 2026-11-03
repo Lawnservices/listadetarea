@@ -110,7 +110,8 @@ button[onclick="addTask()"]:hover {
     list-style: none; */
 }
 #taskList li {
-    width: 100%;
+    max-width: 80%;
+    margin: 24px auto;
     background: rgba(255, 255, 255, 0.95);
     margin-bottom: 12px;
     padding: 12px 4px 12px 14px;
