@@ -102,12 +102,12 @@ button[onclick="addTask()"]:hover {
     background: #1b518f;
 }
 #taskList {
-    display: grid;
+    /* display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    /* width: 100%;
+    gap: 12px; */
+    width: 100%;
     max-width: 700px;
-    list-style: none; */
+    list-style: none;
 }
 #taskList li {
     max-width: 80%;
@@ -174,9 +174,9 @@ button[onclick="addTask()"]:hover {
     #taskList li:hover {
         transform: none;
     }
-    #tasklist {
+    /* #tasklist {
     grid-template-columns: 1fr;
-    }
+    } */
 }
 @media (max-width: 480px) {
     body {
