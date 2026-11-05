@@ -256,3 +256,7 @@ button[onclick="addTask()"]:hover {
     }
 
 }
+
+#time{
+color: azure;
+}
