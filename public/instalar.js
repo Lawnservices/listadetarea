@@ -7,3 +7,6 @@ if (time < 12){
 } else{
   document.getElementById('time').textContent = 'Buenos noches';
 }
+
+
+ 
