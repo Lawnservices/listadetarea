@@ -69,4 +69,4 @@ async function logout() {
 }
 
   //  usuario nombres
- document.getElementById("username").textContent = data.username;
+//  document.getElementById("username").textContent = data.username;
