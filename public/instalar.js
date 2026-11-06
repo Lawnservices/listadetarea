@@ -1,11 +1,11 @@
 let time = 14;
 let momento;
 if (time < 12){
-   momento = 'Buenas días';
+   momento = 'manana';
 } else if (time < 18){
-   momento = 'Buenas tardes';
+   momento = 'tarde';
 } else{
-   momento = 'Buenas noches';
+   momento = 'noche';
 }
 
 
