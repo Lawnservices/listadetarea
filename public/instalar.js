@@ -1,4 +1,7 @@
-let time = 14;
+// let time = 14;
+
+let time = new Date().getHours();
+
 let momento;
 if (time < 12){
    momento = 'manana';
@@ -15,6 +18,6 @@ document.getElementById("time").textContent =
     traduccionesTareas[idioma].time[momento];
 
 
-// let time = new Date().getHours();
+ 
 
  
