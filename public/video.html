@@ -1,121 +1,142 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Una pelicla</title>
-    <style>
-        
-.video-contenedor {
-    max-width: 850px;
-    margin: 30px auto;
-    padding: 20px;
-    background: #151515;
-    border-radius: 15px;
-    color: white;
-    text-align: center;
-    font-family: Arial, sans-serif;
-}
-
-.video-contenedor video {
-    width: 100%;
-    border-radius: 12px;
-    background: black;
-}
-
-#progresoVideo {
-    color: #ccc;
-    font-size: 14px;
-}
-
-#reiniciarVideo {
-    background: #2563eb;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Una película</title>
+<style>
+body{margin:0;background:#f4f6f9;font-family:Arial,sans-serif}
+.video-contenedor{max-width:850px;margin:30px auto;padding:20px;background:#151515;border-radius:15px;color:white;text-align:center;box-sizing:border-box}
+.video-contenedor video{width:100%;border-radius:12px;background:black}
+#progresoVideo{color:#ccc;font-size:14px}
+#reiniciarVideo{background:#2563eb;color:white;border:none;padding:12px 20px;border-radius:8px;cursor:pointer;font-size:15px}
+#reiniciarVideo:hover{background:#1d4ed8}
+h1{text-align:center;margin-top:30px}
+@media(max-width:600px){.video-contenedor{margin:15px;padding:12px}}
+</style>
 </head>
-<body>
-    <h1>disfuta la pelicula</h1>
+<body style="display:none;">
+
+<h1>Disfruta la película</h1>
 
 <div class="video-contenedor">
-    <h2>Disfruta nuestro video</h2>
-
-    <video id="miVideo" controls playsinline preload="metadata">
-        <source src="https://firebasestorage.googleapis.com/v0/b/jardines-4e1db.firebasestorage.app/o/2026-07-17%2017-45-25.mp4?alt=media&amp;token=121fa263-7f93-4d78-9741-fcba3720e2ed" type="video/mp4">
-        Tu navegador no soporta videos.
-    </video>
-
-    <p id="progresoVideo">Tu progreso se guarda automáticamente.</p>
-
-    <button id="reiniciarVideo">Ver desde el principio</button>
+<h2>Disfruta nuestro video</h2>
+<video id="miVideo" controls playsinline preload="none">
+<source src="https://firebasestorage.googleapis.com/v0/b/jardines-4e1db.firebasestorage.app/o/2026-07-17%2017-45-25.mp4?alt=media&amp;token=121fa263-7f93-4d78-9741-fcba3720e2ed" type="video/mp4">
+Tu navegador no soporta videos.
+</video>
+<p id="progresoVideo">Tu progreso se guarda automáticamente.</p>
+<button id="reiniciarVideo">Ver desde el principio</button>
 </div>
+
 <script>
 
-const video = document.getElementById("miVideo");
-const progreso = document.getElementById("progresoVideo");
-const boton = document.getElementById("reiniciarVideo");
+// VERIFICAR USUARIO
+const token=localStorage.getItem("token");
+const username=localStorage.getItem("username");
 
-const clave = "progreso_mi_video";
+if(!token||!username){
+    window.location.replace("login.html");
+}else{
 
-let guardado = false;
-
-// Recuperar el último segundo visto
-video.addEventListener("loadedmetadata", function() {
-
-    const tiempo = localStorage.getItem(clave);
-
-    if (tiempo && Number(tiempo) < video.duration - 2) {
-        video.currentTime = Number(tiempo);
-        progreso.textContent =
-            "Puedes continuar donde dejaste el video.";
-    }
-
-    guardado = true;
-});
-
-// Guardar cada 5 segundos
-video.addEventListener("timeupdate", function() {
-
-    if (guardado && !video.paused) {
-        localStorage.setItem(clave, video.currentTime);
-    }
-
-});
-
-// Guardar al pausar
-video.addEventListener("pause", guardarProgreso);
-
-// Guardar cuando sale de la página
-window.addEventListener("pagehide", guardarProgreso);
-
-function guardarProgreso() {
-
-    if (guardado && !video.ended) {
-        localStorage.setItem(clave, video.currentTime);
-    }
+    fetch("https://www.creantunegocio.com/api/verificar-token",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({token:token})
+    })
+    .then(response=>{
+        if(!response.ok)throw new Error("Sesión no válida");
+        return response.json();
+    })
+    .then(data=>{
+        if(data.ok){
+            iniciarVideo();
+        }else{
+            localStorage.removeItem("token");
+            localStorage.removeItem("username");
+            window.location.replace("login.html");
+        }
+    })
+    .catch(error=>{
+        console.error("Error verificando sesión:",error);
+        document.body.style.display="none";
+    });
 }
 
-// Si termina, comenzar desde cero la próxima vez
-video.addEventListener("ended", function() {
-    localStorage.removeItem(clave);
-    progreso.textContent = "¡Has terminado de ver el video!";
-});
+// INICIAR VIDEO
+function iniciarVideo(){
 
-// Reiniciar video
-boton.addEventListener("click", function() {
+    document.body.style.display="block";
 
-    video.currentTime = 0;
-    localStorage.removeItem(clave);
+    const video=document.getElementById("miVideo");
+    const progreso=document.getElementById("progresoVideo");
+    const boton=document.getElementById("reiniciarVideo");
 
-    progreso.textContent = "Video reiniciado.";
-});
+    // PROGRESO INDEPENDIENTE DE CADA USUARIO
+    const clave="progreso_mi_video_"+username;
+
+    let guardado=false;
+
+    // RECUPERAR ÚLTIMO SEGUNDO
+    video.addEventListener("loadedmetadata",function(){
+
+        const tiempo=localStorage.getItem(clave);
+
+        if(tiempo!==null&&Number.isFinite(Number(tiempo))&&Number(tiempo)>=0&&Number(tiempo)<video.duration-2){
+
+            video.currentTime=Number(tiempo);
+
+            progreso.textContent="Puedes continuar donde dejaste el video.";
+        }
+
+        guardado=true;
+    });
+
+    // GUARDAR PROGRESO
+    video.addEventListener("timeupdate",function(){
+
+        if(guardado&&!video.paused&&!video.ended){
+            localStorage.setItem(clave,video.currentTime);
+        }
+
+    });
+
+    // GUARDAR AL PAUSAR
+    video.addEventListener("pause",guardarProgreso);
+
+    // GUARDAR AL SALIR
+    window.addEventListener("pagehide",guardarProgreso);
+
+    function guardarProgreso(){
+
+        if(guardado&&!video.ended){
+            localStorage.setItem(clave,video.currentTime);
+        }
+
+    }
+
+    // CUANDO TERMINA
+    video.addEventListener("ended",function(){
+
+        localStorage.removeItem(clave);
+
+        progreso.textContent="¡Has terminado de ver la película!";
+
+    });
+
+    // REINICIAR VIDEO
+    boton.addEventListener("click",function(){
+
+        video.currentTime=0;
+
+        localStorage.removeItem(clave);
+
+        progreso.textContent="Video reiniciado.";
+
+    });
+
+}
 
 </script>
- 
 </body>
 </html>
