@@ -41,12 +41,34 @@
             color: aliceblue;
         }
         .video{
-        font-size: 18px;
-        text-align: center;
-        color: #fff;
-        margin-top: 30px;
-        margin-bottom: 30px;
-        }
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    color:white;
+    background:#2563eb;
+    padding:13px 22px;
+    border-radius:10px;
+    text-decoration:none;
+    font-size:15px;
+    font-weight:600;
+    transition:all .3s ease;
+    box-shadow:0 3px 10px rgba(37,99,235,.2);
+}
+.video:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
+    box-shadow:0 6px 15px rgba(37,99,235,.3);
+}
+.video:active{
+    transform:scale(.97);
+}
+@media(max-width:600px){
+    .video{
+        padding:11px 17px;
+        font-size:14px;
+    }
+}
     </style>
 </head>
 
@@ -93,7 +115,9 @@
     </button>
 
     <ul id="taskList"></ul>
-     <a href="/video" class="video">Disfruta de la pelicula</a>
+    <a href="/video" class="video">
+    ▶ Disfruta de la película
+    </a>
     <script src="auth.js"></script>
     <script src="app.js"></script>
 
