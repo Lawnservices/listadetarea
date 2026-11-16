@@ -16,10 +16,49 @@ h1{text-align:center;margin:30px 10px}
 #reiniciarVideo:hover{background:#1d4ed8}
 #estado{display:none;text-align:center;margin:40px 15px;color:#333}
 @media(max-width:600px){.video-contenedor{margin:15px;padding:12px}}
+
+.video-header{
+    width:100%;
+    padding:18px 25px;
+    background:#151515;
+    display:flex;
+    align-items:center;
+    box-shadow:0 3px 12px rgba(0,0,0,.15);
+}
+.btn-volver{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    color:white;
+    background:#2563eb;
+    padding:11px 20px;
+    border-radius:10px;
+    text-decoration:none;
+    font-size:15px;
+    font-weight:600;
+    transition:all .3s ease;
+}
+.btn-volver:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
+    box-shadow:0 5px 12px rgba(37,99,235,.3);
+}
+.btn-volver span{
+    font-size:21px;
+    line-height:1;
+}
+@media(max-width:600px){
+    .video-header{padding:13px 15px}
+    .btn-volver{padding:10px 16px;font-size:14px}
+}
 </style>
 </head>
 <body>
-
+ <header class="video-header">
+    <a href="/tareas" class="btn-volver">
+        <span>←</span> Mis tareas
+    </a>
+</header>
 <h1>Disfruta la película</h1>
 <p id="estado"></p>
 
