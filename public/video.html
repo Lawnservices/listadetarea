@@ -1,142 +1,131 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Una película</title>
+<title>Disfruta la película</title>
 <style>
+*{box-sizing:border-box}
 body{margin:0;background:#f4f6f9;font-family:Arial,sans-serif}
-.video-contenedor{max-width:850px;margin:30px auto;padding:20px;background:#151515;border-radius:15px;color:white;text-align:center;box-sizing:border-box}
-.video-contenedor video{width:100%;border-radius:12px;background:black}
+h1{text-align:center;margin:30px 10px}
+.video-contenedor{display:none;max-width:850px;margin:30px auto;padding:20px;background:#151515;border-radius:15px;color:white;text-align:center}
+.video-contenedor video{width:100%;border-radius:12px;background:#000}
 #progresoVideo{color:#ccc;font-size:14px}
-#reiniciarVideo{background:#2563eb;color:white;border:none;padding:12px 20px;border-radius:8px;cursor:pointer;font-size:15px}
+#reiniciarVideo{background:#2563eb;color:white;border:0;padding:12px 20px;border-radius:8px;cursor:pointer;font-size:15px}
 #reiniciarVideo:hover{background:#1d4ed8}
-h1{text-align:center;margin-top:30px}
+#estado{display:none;text-align:center;margin:40px 15px;color:#333}
 @media(max-width:600px){.video-contenedor{margin:15px;padding:12px}}
 </style>
 </head>
-<body style="display:none;">
+<body>
 
 <h1>Disfruta la película</h1>
+<p id="estado"></p>
 
-<div class="video-contenedor">
+<div class="video-contenedor" id="contenedorVideo">
 <h2>Disfruta nuestro video</h2>
-<video id="miVideo" controls playsinline preload="none">
+<video id="miVideo" controls playsinline preload="metadata">
 <source src="https://firebasestorage.googleapis.com/v0/b/jardines-4e1db.firebasestorage.app/o/2026-07-17%2017-45-25.mp4?alt=media&amp;token=121fa263-7f93-4d78-9741-fcba3720e2ed" type="video/mp4">
 Tu navegador no soporta videos.
 </video>
 <p id="progresoVideo">Tu progreso se guarda automáticamente.</p>
-<button id="reiniciarVideo">Ver desde el principio</button>
+<button id="reiniciarVideo" type="button">Ver desde el principio</button>
 </div>
 
 <script>
-
-// VERIFICAR USUARIO
 const token=localStorage.getItem("token");
 const username=localStorage.getItem("username");
+const estado=document.getElementById("estado");
 
 if(!token||!username){
     window.location.replace("login.html");
 }else{
+    verificarSesion();
+}
 
-    fetch("https://www.creantunegocio.com/api/verificar-token",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({token:token})
-    })
-    .then(response=>{
-        if(!response.ok)throw new Error("Sesión no válida");
-        return response.json();
-    })
-    .then(data=>{
-        if(data.ok){
+async function verificarSesion(){
+    try{
+        const respuesta=await fetch("https://www.creantunegocio.com/api/verificar-token",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({token:token})
+        });
+
+        if(!respuesta.ok){
+            localStorage.removeItem("token");
+            localStorage.removeItem("username");
+            window.location.replace("login.html");
+            return;
+        }
+
+        const datos=await respuesta.json();
+
+        if(datos.ok===true){
             iniciarVideo();
         }else{
             localStorage.removeItem("token");
             localStorage.removeItem("username");
             window.location.replace("login.html");
         }
-    })
-    .catch(error=>{
+    }catch(error){
         console.error("Error verificando sesión:",error);
-        document.body.style.display="none";
-    });
+        estado.style.display="block";
+        estado.textContent="No se pudo verificar tu sesión. Comprueba tu conexión o inténtalo nuevamente.";
+    }
 }
 
-// INICIAR VIDEO
 function iniciarVideo(){
-
-    document.body.style.display="block";
-
     const video=document.getElementById("miVideo");
     const progreso=document.getElementById("progresoVideo");
     const boton=document.getElementById("reiniciarVideo");
-
-    // PROGRESO INDEPENDIENTE DE CADA USUARIO
+    const contenedor=document.getElementById("contenedorVideo");
     const clave="progreso_mi_video_"+username;
+    let listo=false;
 
-    let guardado=false;
+    contenedor.style.display="block";
 
-    // RECUPERAR ÚLTIMO SEGUNDO
     video.addEventListener("loadedmetadata",function(){
+        const tiempo=Number(localStorage.getItem(clave));
 
-        const tiempo=localStorage.getItem(clave);
-
-        if(tiempo!==null&&Number.isFinite(Number(tiempo))&&Number(tiempo)>=0&&Number(tiempo)<video.duration-2){
-
-            video.currentTime=Number(tiempo);
-
+        if(Number.isFinite(tiempo)&&tiempo>0&&tiempo<video.duration-2){
+            video.currentTime=tiempo;
             progreso.textContent="Puedes continuar donde dejaste el video.";
+        }else{
+            localStorage.removeItem(clave);
         }
 
-        guardado=true;
+        listo=true;
     });
-
-    // GUARDAR PROGRESO
-    video.addEventListener("timeupdate",function(){
-
-        if(guardado&&!video.paused&&!video.ended){
-            localStorage.setItem(clave,video.currentTime);
-        }
-
-    });
-
-    // GUARDAR AL PAUSAR
-    video.addEventListener("pause",guardarProgreso);
-
-    // GUARDAR AL SALIR
-    window.addEventListener("pagehide",guardarProgreso);
 
     function guardarProgreso(){
-
-        if(guardado&&!video.ended){
-            localStorage.setItem(clave,video.currentTime);
+        if(listo&&!video.ended&&Number.isFinite(video.currentTime)){
+            localStorage.setItem(clave,String(video.currentTime));
         }
-
     }
 
-    // CUANDO TERMINA
+    video.addEventListener("timeupdate",guardarProgreso);
+    video.addEventListener("pause",guardarProgreso);
+    window.addEventListener("pagehide",guardarProgreso);
+    document.addEventListener("visibilitychange",function(){
+        if(document.visibilityState==="hidden")guardarProgreso();
+    });
+
     video.addEventListener("ended",function(){
-
         localStorage.removeItem(clave);
-
         progreso.textContent="¡Has terminado de ver la película!";
-
     });
 
-    // REINICIAR VIDEO
     boton.addEventListener("click",function(){
-
         video.currentTime=0;
-
         localStorage.removeItem(clave);
-
         progreso.textContent="Video reiniciado.";
-
     });
 
+    video.addEventListener("error",function(){
+        progreso.textContent="No se pudo cargar el video. Comprueba el enlace de Firebase.";
+    });
 }
-
 </script>
 </body>
 </html>
